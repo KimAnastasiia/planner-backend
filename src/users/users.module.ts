@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './services/users.service';
 import { users } from './typeorm/User.entity';
 import { UsersController } from './controllers/users.controller';
-import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
+import { AuthorizationMiddleware } from '../authorizationMiddleware/authorization.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([users])],
