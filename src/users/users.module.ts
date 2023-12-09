@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 // database/database.module.ts
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './services/users.service';
 import { users } from './typeorm/User.entity';
 import { UsersController } from './controllers/users.controller';
+import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([users])],
@@ -13,4 +14,15 @@ import { UsersController } from './controllers/users.controller';
   controllers: [UsersController],
 })
 
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthorizationMiddleware).forRoutes('users')
+      .apply(AuthorizationMiddleware).forRoutes(
+        {
+          path: "users",
+          method: RequestMethod.GET
+        }
+
+      )
+  }
+}
