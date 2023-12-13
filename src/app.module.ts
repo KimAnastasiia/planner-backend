@@ -13,7 +13,7 @@ import { users } from './users/typeorm/User.entity';
     port: 3306,
     username:'root2',
     password:"123456qqqqqq",
-    database:'permissions',
+    database:'planner',
     entities:[users],
     synchronize:true,
   }), 
