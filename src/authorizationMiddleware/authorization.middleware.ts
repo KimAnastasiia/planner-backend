@@ -13,28 +13,29 @@ export class AuthorizationMiddleware implements NestMiddleware {
       return res.status(400).json({ error: 'Access token not provided.' });
     }
 
-    if (access_token == 1) {
+    if (access_token == "1") {
       req.googleUserData = { email: 'test@test.com' }; // You can access the user data in your route handlers using req.googleUserData
       next();
-      return
-    }
 
-    const client = new OAuth2Client(CLIENT_ID);
-    let tokenInfo
-    try {
-      tokenInfo = await client.getTokenInfo(
-        access_token
-      );
-    } catch (error) {
-      return res.status(401).json({ error: 'Invalid access token.' });
-    }
-    if (tokenInfo != undefined) {
-      const payload = tokenInfo;
+    } else {
 
-      req.googleUserData = payload; // You can access the user data in your route handlers using req.googleUserData
+      const client = new OAuth2Client(CLIENT_ID);
+      let tokenInfo
+      try {
+        tokenInfo = await client.getTokenInfo(
+          access_token
+        );
+      } catch (error) {
+        return res.status(401).json({ error: 'Invalid access token.' });
+      }
+      if (tokenInfo != undefined) {
+        const payload = tokenInfo;
 
+        req.googleUserData = payload; // You can access the user data in your route handlers using req.googleUserData
+
+      }
+      next();
+      console.log("midd")
     }
-    next();
-    console.log("midd")
   }
 }
