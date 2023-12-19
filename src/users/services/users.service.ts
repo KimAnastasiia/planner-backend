@@ -3,9 +3,9 @@
 // database/database.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { users } from '../typeorm/User.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
+import { users } from '../typeorm/Users.entity';
 
 
 @Injectable()// we can use enywhere like: this.databaseService.createUser(email, password)

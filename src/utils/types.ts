@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 export type UserType={
    email:string;
-   password:string 
+   password:string;
+   name:string;
 }
