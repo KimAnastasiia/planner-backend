@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './services/users.service';
 import { UsersController } from './controllers/users.controller';
-import { AuthorizationMiddleware } from '../authorizationMiddleware/authorization.middleware';
+import { GoogleAuthorizationMiddleware } from '../googleAuthorizationMiddleware/googleAuthorization.middleware';
 import { users } from './typeorm/Users.entity';
 
 @Module({
@@ -18,7 +18,7 @@ export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     //consumer.apply(AuthorizationMiddleware).forRoutes('users')
 
-    consumer.apply(AuthorizationMiddleware).forRoutes(
+    consumer.apply(GoogleAuthorizationMiddleware).forRoutes(
         {
           path: "users",
           method: RequestMethod.POST
