@@ -2,6 +2,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 const CLIENT_ID = '190541474326-dhb8n9vuv9vbd81b9qdit1s0849un5pj.apps.googleusercontent.com';
 import { OAuth2Client } from 'google-auth-library';
+
 @Injectable()
 
 export class GoogleAuthorizationMiddleware implements NestMiddleware {
