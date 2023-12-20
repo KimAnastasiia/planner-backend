@@ -1,15 +1,12 @@
 /* eslint-disable prettier/prettier */
 // database/user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 
 @Entity()
 export class users {
 
-  @PrimaryGeneratedColumn()
-  id:number;
-
-  @Column()
+  @PrimaryColumn()
   email: string;
 
   @Column()

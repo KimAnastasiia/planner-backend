@@ -11,12 +11,9 @@ export class meetings {
 
   @Column()
   date: string;
-
-  @Column()
-  videoConference: string;
   
   @Column()
-  userId: number;
+  userEmail: string;
   
   @Column()
   title:string;

@@ -14,7 +14,7 @@ export class AuthorizationMiddleware implements NestMiddleware {
     }
 
     if (access_token == "1") {
-      req.googleUserData = { email: 'test@test.com' }; // You can access the user data in your route handlers using req.googleUserData
+      req.userEmail =  'test@test.com' ; // You can access the user data in your route handlers using req.googleUserData
       next();
 
     } else {
@@ -31,7 +31,7 @@ export class AuthorizationMiddleware implements NestMiddleware {
       if (tokenInfo != undefined) {
         const payload = tokenInfo;
 
-        req.googleUserData = payload; // You can access the user data in your route handlers using req.googleUserData
+        req.userEmail = payload.email; // You can access the user data in your route handlers using req.googleUserData
 
       }
       next();

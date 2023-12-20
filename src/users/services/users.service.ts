@@ -15,11 +15,19 @@ export class UsersService {
     @InjectRepository(users)
     private userRepository: Repository<users>,
   ) {}
-
+/*
   async getUsers(): Promise<users[]> {
     try {
       //find() return list like get
       return await this.userRepository.find();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  */
+  async getUser(email:string): Promise<users[] | undefined> {
+    try {
+      return await this.userRepository.find({ where: { email } });
     } catch (err) {
       console.log(err);
     }

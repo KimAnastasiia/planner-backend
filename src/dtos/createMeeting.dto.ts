@@ -7,12 +7,8 @@ export class createMeetingDto{
 
     @IsNotEmpty()
     date: string;
-
-    @IsNotEmpty()
-    videoConference: string;
     
-    @IsNotEmpty()
-    userId: number;
+    userEmail: string;
     
     @IsNotEmpty()
     title:string;

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 
@@ -8,7 +8,7 @@ import { CreateUserDto } from 'src/dtos/createUser.dto';
 export class UsersController {
 
   constructor(private readonly usersService: UsersService) { }
-
+/*
   @Get()
   async getUsers() {
 
@@ -23,6 +23,21 @@ export class UsersController {
       }; // Handle errors appropriately
     }
   }
+*/
+  @Get()
+  async getUser(@Query('email') email: string) {
+
+    try {
+      const user = await this.usersService.getUser(email); 
+      return user;
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        error: 'Failed to get user.',
+      }; // Handle errors appropriately
+    }
+  }
 
   @Post()
   @UsePipes(new ValidationPipe())
@@ -34,7 +49,7 @@ export class UsersController {
 
     try {
       const user = await this.usersService.postUser(userData); 
-      return user.id;
+      return user.email;
     } catch (error) {
       console.error(error);
       return {
