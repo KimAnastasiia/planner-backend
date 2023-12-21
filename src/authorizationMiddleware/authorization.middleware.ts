@@ -6,7 +6,7 @@ import {objectOfApiKey} from'src/utils/objectApiKey';
 @Injectable()
 export class AuthorizationMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    const apiKey = req.query.apiKey
+    const apiKey = req.query.access_token
 
     const obj = objectOfApiKey.find((obj)=>
       obj===apiKey
@@ -19,7 +19,7 @@ export class AuthorizationMiddleware implements NestMiddleware {
 
     const infoInToken = jwt.verify(apiKey, "secret");
     req.infoInToken = infoInToken;
-
+    req.userEmail =infoInToken.email
     next();
   }
 }

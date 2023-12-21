@@ -4,7 +4,7 @@ import { MeetingsController } from './controllers/meetings.controller';
 import { MeetingsService } from './services/meetings.service';
 import { meetings } from './typeorm/Meetings.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GoogleAuthorizationMiddleware } from '../googleAuthorizationMiddleware/googleAuthorization.middleware';
+import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
 @Module({
     imports: [TypeOrmModule.forFeature([meetings])],
     providers: [MeetingsService],
@@ -14,7 +14,7 @@ export class MeetingsModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
       //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
   
-      consumer.apply(GoogleAuthorizationMiddleware).forRoutes(
+      consumer.apply(AuthorizationMiddleware).forRoutes(
           {
             path: "meetings",
             method: RequestMethod.POST
