@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { objectOfApiKey } from 'src/utils/objectApiKey';
+import { Request } from 'express';
 import { VerificateUserDto } from 'src/dtos/verificateUser.dto';
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
@@ -31,8 +32,8 @@ export class UsersController {
     }
   */
   @Get()
-  async getUser(@Query('email') email: string) {
-
+  async getUser( @Req() request: Request) {
+    const email = request["userEmail"]
     try {
       const user = await this.usersService.getUser(email);
       return user;

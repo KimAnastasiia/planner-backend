@@ -10,7 +10,7 @@ import { TimesService } from 'src/times/services/times.service';
 @Controller('meetings')
 export class MeetingsController {
 
-    constructor(private readonly meetingsService: MeetingsService,private readonly datesService: DateService) { }
+    constructor(private readonly meetingsService: MeetingsService) { }
     @Post()
     @UsePipes(new ValidationPipe())
     async createMeeting(

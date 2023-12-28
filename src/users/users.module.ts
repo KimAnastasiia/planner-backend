@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UsersService } from './services/users.service';
 import { UsersController } from './controllers/users.controller';
-import { GoogleAuthorizationMiddleware } from '../googleAuthorizationMiddleware/googleAuthorization.middleware';
 import { users } from './typeorm/Users.entity';
 import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
 
@@ -18,8 +17,8 @@ import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorizati
 
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    //consumer.apply(AuthorizationMiddleware).forRoutes('users')
-
+    consumer.apply(AuthorizationMiddleware).forRoutes('users')
+/*
     consumer.apply(AuthorizationMiddleware).forRoutes(
         {
           path: "users",
@@ -27,6 +26,6 @@ export class UsersModule implements NestModule {
         }
 
       )
-   
+   */
   }
 }
