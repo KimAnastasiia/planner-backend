@@ -1,32 +1,32 @@
 /* eslint-disable prettier/prettier */
 import { Module,NestModule,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
-import { MeetingsController } from './controllers/meetings.controller';
-import { MeetingsService } from './services/meetings.service';
-import { meetings } from './typeorm/Meetings.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
-import { DateService } from 'src/date/services/date.service';
-import { dates } from 'src/date/typeorm/Date.entity';
+import { dates } from './typeorm/Date.entity';
+import { DateService } from './services/date.service';
+import { DateController } from './controllers/date.controller';
 import { TimesService } from 'src/times/services/times.service';
 import { times } from 'src/times/typeorm/Time.entity';
 
 
 @Module({
-    imports: [TypeOrmModule.forFeature([meetings]), TypeOrmModule.forFeature([dates]), TypeOrmModule.forFeature([times])],
-    providers: [MeetingsService, DateService, TimesService],
-    controllers: [MeetingsController],
+    imports: [TypeOrmModule.forFeature([dates]),TypeOrmModule.forFeature([times]) ],
+    providers: [DateService, TimesService ],
+    controllers: [DateController ],
 })
-export class MeetingsModule implements NestModule {
+export class DateModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
       //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
   
       consumer.apply(AuthorizationMiddleware).forRoutes(
           {
-            path: "meetings",
+            path: "dates",
             method: RequestMethod.POST
           }
   
         )
      
     }
-  }
+  }{
+
+}

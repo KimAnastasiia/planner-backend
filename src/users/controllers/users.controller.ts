@@ -3,7 +3,7 @@
 import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
-import {objectOfApiKey} from'src/utils/objectApiKey';
+import { objectOfApiKey } from 'src/utils/objectApiKey';
 import { VerificateUserDto } from 'src/dtos/verificateUser.dto';
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
@@ -53,7 +53,7 @@ export class UsersController {
     console.log(userData)
     const cipher = crypto.createCipher(algorithm, keyEncrypt);
     const passwordEncript = cipher.update(userData.password, 'utf8', 'hex') + cipher.final('hex');
-    userData.password=passwordEncript
+    userData.password = passwordEncript
     try {
       const user = await this.usersService.postUser(userData);
       if (user.email) {
@@ -91,10 +91,10 @@ export class UsersController {
     console.log(userData)
     const cipher = crypto.createCipher(algorithm, keyEncrypt);
     const passwordEncript = cipher.update(userData.password, 'utf8', 'hex') + cipher.final('hex');
-    userData.password=passwordEncript
+    userData.password = passwordEncript
     try {
       const user = await this.usersService.postVarificateUser(userData);
-      if (user.length>0) {
+      if (user.length > 0) {
 
         const apiKey = jwt.sign(
           {
@@ -117,7 +117,7 @@ export class UsersController {
       console.error(error);
       return {
         success: false,
-        error: 'Failed to create user.',
+        error: 'Failed to verificate user.',
       }; // Handle errors appropriately
     }
   }

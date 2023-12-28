@@ -1,13 +1,10 @@
 /* eslint-disable prettier/prettier */
 
 import { IsNotEmpty } from "class-validator";
+import { dates } from "src/date/typeorm/Date.entity";
 
 export class createMeetingDto{
-  
-
-    @IsNotEmpty()
-    date: string;
-    
+ 
     userEmail: string;
     
     @IsNotEmpty()
@@ -16,9 +13,10 @@ export class createMeetingDto{
     descriptions:string;
 
     location:string;
-  
+    
     @IsNotEmpty()
-    time:string;
-
+    onlineConference:string;
+    
+    datesArray:dates[]
 }
 

@@ -1,16 +1,14 @@
 /* eslint-disable prettier/prettier */
 // database/user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { dates } from 'src/date/typeorm/Date.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 
 @Entity()
 export class meetings {
 
-  @PrimaryGeneratedColumn()
-  id:number;
-
-  @Column()
-  date: string;
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  id:bigint;
   
   @Column()
   userEmail: string;
@@ -23,8 +21,12 @@ export class meetings {
 
   @Column()
   location:string;
-
+  
   @Column()
-  time:string;
-
+  onlineConference:string;
+  
+  @OneToMany(() => dates, d => d.meeting, { cascade: true })
+  dates:dates[];
 }
+
+

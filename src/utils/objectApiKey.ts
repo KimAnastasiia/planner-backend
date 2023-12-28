@@ -1,3 +1,3 @@
 /* eslint-disable prettier/prettier */
-
-export const objectOfApiKey = [];
+/* eslint-disable prefer-const */
+export let objectOfApiKey = [];

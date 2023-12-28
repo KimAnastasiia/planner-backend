@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -7,6 +8,9 @@ import { UsersModule } from './users/users.module';
 import { users } from './users/typeorm/Users.entity';
 import { meetings } from './meetings/typeorm/Meetings.entity';
 import { MeetingsModule } from './meetings/meetings.module';
+import { DateModule } from './date/date.module';
+import { dates } from './date/typeorm/Date.entity';
+import { times } from './times/typeorm/Time.entity';
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -16,10 +20,10 @@ import { MeetingsModule } from './meetings/meetings.module';
     username:'root2',
     password:"123456qqqqqq",
     database:'planner',
-    entities:[users,meetings],
+    entities:[users,meetings,dates,times],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule],
+  UsersModule, MeetingsModule, DateModule],
   controllers: [AppController],
   providers: [AppService],
 })
