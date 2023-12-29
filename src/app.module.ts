@@ -11,6 +11,8 @@ import { MeetingsModule } from './meetings/meetings.module';
 import { DateModule } from './date/date.module';
 import { dates } from './date/typeorm/Date.entity';
 import { times } from './times/typeorm/Time.entity';
+import { SelectedTimesService } from './selected-times/services/selected-times.service';
+import { SelectedTimesModule } from './selected-times/selected-times.module';
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -23,8 +25,8 @@ import { times } from './times/typeorm/Time.entity';
     entities:[users,meetings,dates,times],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule, DateModule],
+  UsersModule, MeetingsModule, DateModule, SelectedTimesModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SelectedTimesService],
 })
 export class AppModule {}

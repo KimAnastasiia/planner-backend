@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
-import { Body, Controller, Post, UsePipes, ValidationPipe, Req } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query } from '@nestjs/common';
 import { Request } from 'express';
 import { DateService } from 'src/date/services/date.service';
 import { TimesService } from 'src/times/services/times.service';
@@ -11,6 +11,20 @@ import { TimesService } from 'src/times/services/times.service';
 export class MeetingsController {
 
     constructor(private readonly meetingsService: MeetingsService) { }
+    @Get()
+    async getMeeting( @Query() query) {
+      const id = query["meetingId"]
+      try {
+        const meeting = await this.meetingsService.getMeeting(id);
+        return meeting;
+      } catch (error) {
+        console.error(error);
+        return {
+          success: false,
+          error: 'Failed to get meeting.',
+        }; // Handle errors appropriately
+      }
+    }
     @Post()
     @UsePipes(new ValidationPipe())
     async createMeeting(
@@ -24,24 +38,8 @@ export class MeetingsController {
   
       try {
         const meeting = await this.meetingsService.postMeeting(meetingData);
-    
         const meetingId:bigint = meeting.id
-
-        /** 
-        const objToCreateDate={
-
-            datesArray:meetingData.datesArray,
-            idMeeting:BigInt(meetingId)
-
-        }
-        const date = await this.datesService.postDate(objToCreateDate); 
-        // insertar days
-        let dayId = date.id
-        // insertar los times
-
-        **/
-
-        return{message:"done"};
+        return {meetingId:meetingId};
       } catch (error) {
         console.error(error);
         return {

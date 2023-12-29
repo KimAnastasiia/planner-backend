@@ -39,7 +39,7 @@ export class DateService {
                  
                     const forTime = {
                         idDate: BigInt(inertedDate.id),
-                        idMeeting: BigInt(datesDetails.idMeeting),
+                        idMeeting: BigInt(datesDetails.meetingId),
                         time: String(datesDetails.datesArray[i].times[b].time)
                     }
 

@@ -14,6 +14,14 @@ export class MeetingsService {
         private meetingRepository: Repository<meetings>,
     ) { }
 
+    async getMeeting(id:bigint): Promise<meetings[]> {
+        try {
+          return await this.meetingRepository.find({ where: { id:id },relations: ['dates', 'dates.times'], });
+        } catch (err) {
+          console.log(err);
+        }
+    }
+
     async postMeeting(meetingDetails: createMeetingDto): Promise<meetings> {
         try {
             const newMeeting = await this.meetingRepository.create(meetingDetails);

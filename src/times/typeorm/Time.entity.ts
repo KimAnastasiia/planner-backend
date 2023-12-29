@@ -17,18 +17,6 @@ export class times {
   time: string;
 
   @ManyToOne(() => dates, m => m.id)
-  idDate:bigint;
-
- 
-/*
-  @ManyToOne(() => meetings, (meeting) => meeting.id, { cascade:true }) // Many times belong to one meeting
-  @JoinColumn({ name: 'id' }) // Specify the foreign key column name
-  idMeeting:meetings;
-
-  @ManyToOne(() => dates, (date) => date.id, { cascade:true }) // Many times belong to one meeting
-  @JoinColumn({ name: 'id' }) // Specify the foreign key column name
-
-  idDate:dates;
-    */
+  date:bigint;
 
 }

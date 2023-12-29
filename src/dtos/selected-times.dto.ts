@@ -2,13 +2,15 @@
 
 import { IsNotEmpty } from "class-validator";
 
-export class createDate{
+export class SelectedTimes{
   
-    @IsNotEmpty()
-    datesArray: { day: string, times: { time: string, timeId: number }[] }[];
-    
     @IsNotEmpty()
     meetingId: bigint;
 
+    @IsNotEmpty()
+    timeId: bigint;
+    
+    @IsNotEmpty()
+    dateId: bigint;
 }
 
