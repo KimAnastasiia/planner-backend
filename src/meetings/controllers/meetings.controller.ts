@@ -5,8 +5,7 @@ import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
 import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query } from '@nestjs/common';
 import { Request } from 'express';
-import { DateService } from 'src/date/services/date.service';
-import { TimesService } from 'src/times/services/times.service';
+
 @Controller('meetings')
 export class MeetingsController {
 

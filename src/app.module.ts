@@ -13,6 +13,8 @@ import { dates } from './date/typeorm/Date.entity';
 import { times } from './times/typeorm/Time.entity';
 import { SelectedTimesService } from './selected-times/services/selected-times.service';
 import { SelectedTimesModule } from './selected-times/selected-times.module';
+import { ParticipationModule } from './participation/participation.module';
+import { participations } from './participation/typeorm/Participation.entity';
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -22,11 +24,11 @@ import { SelectedTimesModule } from './selected-times/selected-times.module';
     username:'root2',
     password:"123456qqqqqq",
     database:'planner',
-    entities:[users,meetings,dates,times],
+    entities:[users,meetings,dates,times, participations],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule, DateModule, SelectedTimesModule],
+  UsersModule, MeetingsModule, DateModule, SelectedTimesModule, ParticipationModule],
   controllers: [AppController],
-  providers: [AppService, SelectedTimesService],
+  providers: [AppService, SelectedTimesService ],
 })
 export class AppModule {}
