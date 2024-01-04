@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe, HttpStatus, HttpException  } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { objectOfApiKey } from 'src/utils/objectApiKey';
@@ -35,8 +35,24 @@ export class UsersController {
   async getUser( @Req() request: Request) {
     const email = request["userEmail"]
     try {
-      const user = await this.usersService.getUser(email);
-      return user;
+      const userFounded = await this.usersService.getUser(email);
+      if(userFounded.length==0){
+        const user = await this.usersService.postUser({
+          email: email,
+          name: '',
+          password: ''
+        });
+        if (user.email) {
+          return (
+            {
+              name: user.name,
+              email: user.email
+            })
+  
+        }
+      }else{
+        return userFounded;
+      }
     } catch (error) {
       console.error(error);
       return {
@@ -94,7 +110,7 @@ export class UsersController {
     const passwordEncript = cipher.update(userData.password, 'utf8', 'hex') + cipher.final('hex');
     userData.password = passwordEncript
     try {
-      const user = await this.usersService.postVarificateUser(userData);
+      const user = await this.usersService.postVerificateUser(userData);
       if (user.length > 0) {
 
         const apiKey = jwt.sign(
@@ -113,13 +129,19 @@ export class UsersController {
             email: user[0].email
           })
 
+      }else{
+        throw new HttpException({
+          success: false,
+          error: 'Failed to verificate user.',
+        }, HttpStatus.BAD_REQUEST);
       }
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to verificate user.',
-      }; // Handle errors appropriately
+      }, HttpStatus.BAD_REQUEST);
+    
     }
   }
 }

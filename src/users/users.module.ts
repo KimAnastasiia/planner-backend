@@ -17,15 +17,20 @@ import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorizati
 
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    /*
     consumer.apply(AuthorizationMiddleware).forRoutes('users')
-/*
+   */
     consumer.apply(AuthorizationMiddleware).forRoutes(
         {
           path: "users",
           method: RequestMethod.GET
+        },
+        {
+          path: "users",
+          method: RequestMethod.POST
         }
 
       )
-   */
+
   }
 }

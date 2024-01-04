@@ -42,7 +42,7 @@ export class UsersService {
       console.log(err);
     }
   }
-  async postVarificateUser(userDetails:VerificateUserDto): Promise<users[]> {
+  async postVerificateUser(userDetails:VerificateUserDto): Promise<users[]> {
     try {
       //find() return list like get
       return await this.userRepository.find({
