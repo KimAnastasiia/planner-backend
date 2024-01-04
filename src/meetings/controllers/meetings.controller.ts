@@ -24,6 +24,21 @@ export class MeetingsController {
         }; // Handle errors appropriately
       }
     }
+    @Get("/list")
+
+    async getMeetingByEmail(@Req() request: Request) {
+      const email = request["userEmail"]
+      try {
+        const meetings = await this.meetingsService.getMeetingsByEmail(email);
+        return meetings;
+      } catch (error) {
+        console.error(error);
+        return {
+          success: false,
+          error: 'Failed to get meetings.',
+        }; // Handle errors appropriately
+      }
+    }
     @Post()
     @UsePipes(new ValidationPipe())
     async createMeeting(

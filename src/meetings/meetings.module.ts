@@ -24,7 +24,12 @@ export class MeetingsModule implements NestModule {
           {
             path: "meetings",
             method: RequestMethod.POST
+          },
+          {
+            path: "meetings/list",
+            method: RequestMethod.GET
           }
+  
   
         )
      

@@ -21,7 +21,13 @@ export class MeetingsService {
           console.log(err);
         }
     }
-
+    async getMeetingsByEmail(userEmail:string): Promise<meetings[]> {
+        try {
+          return await this.meetingRepository.find({ where: { userEmail },relations: ['dates', 'dates.times'], });
+        } catch (err) {
+          console.log(err);
+        }
+    }
     async postMeeting(meetingDetails: createMeetingDto): Promise<meetings> {
         try {
             const newMeeting = await this.meetingRepository.create(meetingDetails);
