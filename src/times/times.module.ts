@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Module,NestModule,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
+import { Module,NestModule,MiddlewareConsumer } from '@nestjs/common';
 import { times } from './typeorm/Time.entity';
 import { TimesService } from './services/times.service';
 import { TimesController } from './controllers/times.controller';
@@ -12,8 +13,8 @@ import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorizati
 })
 export class TimesModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
-    
+        //consumer.apply(AuthorizationMiddleware).forRoutes('times')
+    /*
         consumer.apply(AuthorizationMiddleware).forRoutes(
             {
               path: "times",
@@ -21,6 +22,7 @@ export class TimesModule implements NestModule {
             }
     
           )
+          */
        
       }
 }

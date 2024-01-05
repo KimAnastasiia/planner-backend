@@ -8,18 +8,20 @@ import { addTimesDto } from 'src/dtos/addTimes.dto';
 
 @Injectable()
 export class TimesService {
+
     constructor(
         @InjectRepository(times)
         private timesRepository: Repository<any>,
     ) { }
-    async postTimes(timesDetails: addTimesDto): Promise<times> {
+
+    async deleteTime(id: bigint): Promise<any> {
         try {
-            const result = await this.timesRepository.delete(1);
-            const newTime = this.timesRepository.create(timesDetails);
-            return await this.timesRepository.save(newTime);
-           
+            const time = await this.timesRepository.find({ where: { id }, relations: ['participations'] });
+            await this.timesRepository.remove(time);
+            return { success: true };
         } catch (err) {
             console.log(err);
+            return { success: false, error: 'Failed to delete time and participations.' };
         }
     }
 }

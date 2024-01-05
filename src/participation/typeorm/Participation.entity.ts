@@ -23,7 +23,7 @@ export class participations {
   @ManyToOne(() => meetings, m => m.id, { cascade: true })
   meeting:bigint;
 
-  @ManyToOne(() => times, t => t.id, { cascade: true })
+  @ManyToOne(() => times, t => t.id, { cascade: true , onDelete: 'CASCADE' })
   time:bigint;
  
 }
