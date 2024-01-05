@@ -4,6 +4,7 @@ import { meetings } from '../typeorm/Meetings.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { Repository } from 'typeorm'
+import { MeetingUpdateDto } from 'src/dtos/meetingUpdate.dto';
 
 
 @Injectable()
@@ -28,6 +29,27 @@ export class MeetingsService {
           console.log(err);
         }
     }
+    
+    async updateMeeting(updateData: MeetingUpdateDto): Promise<meetings> {
+   
+      const existingMeeting = await this.getMeeting(updateData.id);
+      const curMeeting = existingMeeting[0]
+      if (!curMeeting) {
+        throw new Error('Meeting not found');
+      }
+  
+      // Update the meeting properties
+      curMeeting.title = updateData.title;
+      curMeeting.descriptions = updateData.descriptions;
+      curMeeting.location = updateData.location;
+      curMeeting.onlineConference = updateData.onlineConference;
+  
+      // Save the updated meeting
+      const updatedMeeting = await this.meetingRepository.save(curMeeting);
+  
+      return updatedMeeting;
+    }
+
     async postMeeting(meetingDetails: createMeetingDto): Promise<meetings> {
         try {
             const newMeeting = await this.meetingRepository.create(meetingDetails);
