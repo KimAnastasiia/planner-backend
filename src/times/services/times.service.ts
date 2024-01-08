@@ -11,9 +11,10 @@ export class TimesService {
 
     constructor(
         @InjectRepository(times)
-        private timesRepository: Repository<any>,
+        private timesRepository: Repository<times>,
     ) { }
 
+    // Mockup timesRepository[ 1000, 300 , 400 , 5000]
     async deleteTime(id: bigint): Promise<any> {
         try {
             const time = await this.timesRepository.find({ where: { id }, relations: ['participations'] });

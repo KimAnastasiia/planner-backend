@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { dates } from 'src/date/typeorm/Date.entity';
 import { meetings } from 'src/meetings/typeorm/Meetings.entity';
 import { times } from 'src/times/typeorm/Time.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
@@ -16,9 +15,6 @@ export class participations {
 
   @Column()
   name: string;
-
-  @ManyToOne(() => dates, d => d.id, { cascade: true })
-  date:bigint;
 
   @ManyToOne(() => meetings, m => m.id, { cascade: true })
   meeting:bigint;

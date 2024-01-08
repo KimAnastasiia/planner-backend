@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { Module,NestModule,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,15 +18,15 @@ import { times } from 'src/times/typeorm/Time.entity';
 export class DateModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
       //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
-  
+
       consumer.apply(AuthorizationMiddleware).forRoutes(
           {
             path: "dates",
-            method: RequestMethod.POST
+            method: RequestMethod.DELETE
           }
   
         )
-     
+
     }
   }{
 
