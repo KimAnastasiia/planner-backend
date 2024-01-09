@@ -20,10 +20,10 @@ import { TimesModule } from './times/times.module';
   imports: [ 
     TypeOrmModule.forRoot({
     type:'mariadb',
-    host:'38.242.239.205',
+    host:'127.0.0.1',
     port: 3306,
-    username:'root2',
-    password:"123456qqqqqq",
+    username:'root',
+    password:"1234",
     database:'planner',
     entities:[users,meetings,dates,times, participations],
     synchronize:true,

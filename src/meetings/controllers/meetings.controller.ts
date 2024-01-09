@@ -28,7 +28,7 @@ export class MeetingsController {
   @Put() // Assuming you are passing the meetingId as part of the URL
   
   async updateMeeting(
-    @Body() updateData: MeetingUpdateDto, // You'll need to create a DTO for the update data
+    @Body() updateData: createMeetingDto, // You'll need to create a DTO for the update data
   ) {
 
     try {

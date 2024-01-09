@@ -18,5 +18,6 @@ export class MeetingUpdateDto{
     @IsNotEmpty()
     onlineConference:string;
 
+    dates:[]
 }
 

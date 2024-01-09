@@ -4,7 +4,9 @@ import { IsNotEmpty } from "class-validator";
 import { dates } from "src/date/typeorm/Date.entity";
 
 export class createMeetingDto{
- 
+    
+    id: bigint
+
     userEmail: string;
     
     @IsNotEmpty()
@@ -17,6 +19,6 @@ export class createMeetingDto{
     @IsNotEmpty()
     onlineConference:string;
     
-    datesArray:dates[]
+    dates:dates[]
 }
 

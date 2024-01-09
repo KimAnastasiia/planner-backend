@@ -4,7 +4,6 @@ import { meetings } from '../typeorm/Meetings.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { Repository } from 'typeorm'
-import { MeetingUpdateDto } from 'src/dtos/meetingUpdate.dto';
 
 
 @Injectable()
@@ -30,7 +29,7 @@ export class MeetingsService {
         }
     }
     
-    async updateMeeting(updateData: MeetingUpdateDto): Promise<meetings> {
+    async updateMeeting(updateData: createMeetingDto): Promise<meetings> {
    
       const existingMeeting = await this.getMeeting(updateData.id);
       const curMeeting = existingMeeting[0]
@@ -43,8 +42,10 @@ export class MeetingsService {
       curMeeting.descriptions = updateData.descriptions;
       curMeeting.location = updateData.location;
       curMeeting.onlineConference = updateData.onlineConference;
+      curMeeting.dates=updateData.dates
   
       // Save the updated meeting
+      //await this.meetingRepository.update(String(updateData.id), curMeeting);
       const updatedMeeting = await this.meetingRepository.save(curMeeting);
   
       return updatedMeeting;
