@@ -100,7 +100,7 @@ export class UsersController {
       }; // Handle errors appropriately
     }
   }
-  @Post("verification")
+  @Post("/verification")
   @UsePipes(new ValidationPipe())
 
   async verificateUser(@Body() userData: VerificateUserDto) {

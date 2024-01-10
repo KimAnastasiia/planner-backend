@@ -29,26 +29,32 @@ export class MeetingsService {
         }
     }
     
-    async updateMeeting(updateData: createMeetingDto): Promise<meetings> {
-   
-      const existingMeeting = await this.getMeeting(updateData.id);
-      const curMeeting = existingMeeting[0]
-      if (!curMeeting) {
-        throw new Error('Meeting not found');
+    async updateMeeting(email:string, updateData: createMeetingDto): Promise<meetings> {
+//CHECK IF ITS WORKS
+      if(email==updateData.userEmail){
+
+        const existingMeeting = await this.getMeeting(updateData.id);
+        const curMeeting = existingMeeting[0]
+
+        if (!curMeeting) {
+          throw new Error('Meeting not found');
+        }
+    
+        // Update the meeting properties
+        curMeeting.title = updateData.title;
+        curMeeting.descriptions = updateData.descriptions;
+        curMeeting.location = updateData.location;
+        curMeeting.onlineConference = updateData.onlineConference;
+        curMeeting.dates=updateData.dates
+    
+        // Save the updated meeting
+        //await this.meetingRepository.update(String(updateData.id), curMeeting);
+        const updatedMeeting = await this.meetingRepository.save(curMeeting);
+    
+        return updatedMeeting;
+      }else{
+        throw new Error('User is not creator of this meeting');
       }
-  
-      // Update the meeting properties
-      curMeeting.title = updateData.title;
-      curMeeting.descriptions = updateData.descriptions;
-      curMeeting.location = updateData.location;
-      curMeeting.onlineConference = updateData.onlineConference;
-      curMeeting.dates=updateData.dates
-  
-      // Save the updated meeting
-      //await this.meetingRepository.update(String(updateData.id), curMeeting);
-      const updatedMeeting = await this.meetingRepository.save(curMeeting);
-  
-      return updatedMeeting;
     }
 
     async postMeeting(meetingDetails: createMeetingDto): Promise<meetings> {

@@ -28,11 +28,13 @@ export class MeetingsController {
   @Put() // Assuming you are passing the meetingId as part of the URL
   
   async updateMeeting(
-    @Body() updateData: createMeetingDto, // You'll need to create a DTO for the update data
-  ) {
+    @Body() updateData: createMeetingDto,
+    @Req() request: Request // You'll need to create a DTO for the update data
+  ) 
+  { const email = request["userEmail"]
 
     try {
-      const updatedMeeting = await this.meetingsService.updateMeeting(updateData);
+      const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData);
       return updatedMeeting;
     } catch (error) {
       console.error(error);
