@@ -28,6 +28,9 @@ export class meetings {
   @OneToMany(() => dates, d => d.meeting, { cascade: true })
   dates:dates[];
   
+  @Column()
+  token:string;
+  
 }
 
 
