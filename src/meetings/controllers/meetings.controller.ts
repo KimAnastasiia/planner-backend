@@ -73,7 +73,10 @@ export class MeetingsController {
     try {
       const meeting = await this.meetingsService.postMeeting(meetingData);
       const meetingId: bigint = meeting.id
-      return { meetingId: meetingId };
+      return { 
+        meetingId: meetingId,
+        token:meeting.token 
+      };
     } catch (error) {
       console.error(error);
       return {
