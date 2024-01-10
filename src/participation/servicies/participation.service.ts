@@ -17,12 +17,10 @@ export class ParticipationService {
     ) { }
 
     async getParticipation(userEmail, meetingId): Promise<participations[]> {
-        
+    
         const meetingDetails = await this.meetingsService.getMeeting(meetingId);
-        const participation =  await this.participationRepository.find({ where: {meetingId},relations: ['time',"time.date", ], });
-
         if(meetingDetails[0].userEmail==userEmail) {
-            return participation
+            return await this.participationRepository.find({ where: {meetingId},relations: ['time',"time.date"]});
         }else{
             throw new Error('Actual user is not the owner of meeting');
         }

@@ -4,6 +4,7 @@ import { meetings } from '../typeorm/Meetings.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { Repository } from 'typeorm'
+import { generateRandomToken } from 'src/utils/tokens';
 
 
 @Injectable()
@@ -56,19 +57,10 @@ export class MeetingsService {
       throw new Error('User is not creator of this meeting');
     }
   }
-  generateRandomToken() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let token = '';
-    for (let i = 0; i < 17; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      token += characters.charAt(randomIndex);
-    }
-    return token;
-  }
   async postMeeting(meetingDetails: createMeetingDto): Promise<meetings> {
     try {
       const newMeeting = await this.meetingRepository.create(meetingDetails);
-      newMeeting.token = this.generateRandomToken() + String(Date.now())
+      newMeeting.token = generateRandomToken() + String(Date.now())
       return await this.meetingRepository.save(newMeeting);
     } catch (err) {
       console.log(err);
