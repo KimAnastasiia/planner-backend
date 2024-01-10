@@ -1,24 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe, Param, Req,HttpStatus, HttpException  } from '@nestjs/common';
 import { ParticipationService } from '../servicies/participation.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
-
+import { Request } from 'express';
 @Controller('participation')
 export class ParticipationController {
 
   constructor(private readonly participationService: ParticipationService) { }
+  
   @Get(":meetingId")
-  async getMeeting(@Param('meetingId') meetingId: bigint) {
-   
+  async getMeeting(@Param('meetingId') meetingId: bigint,  @Req() request: Request ) {
+    const userEmail = request["userEmail"]
     try {
-      const participation = await this.participationService.getParticipation(meetingId);
+      const participation = await this.participationService.getParticipation(userEmail, meetingId);
       return participation;
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
-        error: 'Failed to get participation.',
-      }; // Handle errors appropriately
+        error: 'Failed to verificate user.',
+      }, HttpStatus.BAD_REQUEST);
     }
   }
   @Post()
