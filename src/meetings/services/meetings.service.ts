@@ -23,14 +23,14 @@ export class MeetingsService {
     }
     async getMeetingsByEmail(userEmail:string): Promise<meetings[]> {
         try {
-          return await this.meetingRepository.find({ where: { userEmail },relations: ['dates', 'dates.times'], });
+          return await this.meetingRepository.find({ where: { userEmail },select: ['id', 'title', 'descriptions', 'location', 'onlineConference'], relations: ['dates', 'dates.times'], });
         } catch (err) {
           console.log(err);
         }
     }
     
     async updateMeeting(email:string, updateData: createMeetingDto): Promise<meetings> {
-//CHECK IF ITS WORKS
+
       if(email==updateData.userEmail){
 
         const existingMeeting = await this.getMeeting(updateData.id);

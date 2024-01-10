@@ -15,22 +15,7 @@ const algorithm = 'aes256'
 export class UsersController {
 
   constructor(private readonly usersService: UsersService) { }
-  /*
-    @Get()
-    async getUsers() {
-  
-      try {
-        const userList = await this.usersService.getUsers(); 
-        return userList;
-      } catch (error) {
-        console.error(error);
-        return {
-          success: false,
-          error: 'Failed to get users.',
-        }; // Handle errors appropriately
-      }
-    }
-  */
+
   @Get()
   async getUser( @Req() request: Request) {
     const email = request["userEmail"]
