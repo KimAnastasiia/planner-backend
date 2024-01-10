@@ -11,7 +11,7 @@ export class dates {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id:bigint;
   
-  @ManyToOne(() => meetings, m => m.id)
+  @ManyToOne(() => meetings, m => m.dates)
   meeting:meetings;
 
   @Column()

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe, Param } from '@nestjs/common';
 import { ParticipationService } from '../servicies/participation.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 
@@ -7,11 +7,11 @@ import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 export class ParticipationController {
 
   constructor(private readonly participationService: ParticipationService) { }
-  @Get()
-  async getMeeting(@Query() query) {
-    const id = query["meetingId"]
+  @Get(":meetingId")
+  async getMeeting(@Param('meetingId') meetingId: bigint) {
+   
     try {
-      const participation = await this.participationService.getParticipation(id);
+      const participation = await this.participationService.getParticipation(meetingId);
       return participation;
     } catch (error) {
       console.error(error);

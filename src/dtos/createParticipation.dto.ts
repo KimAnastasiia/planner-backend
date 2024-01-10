@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 import { IsEmail, IsNotEmpty } from "class-validator";
+import { times } from "src/times/typeorm/Time.entity";
 
 export class createParticipationDto {
 
@@ -11,10 +12,12 @@ export class createParticipationDto {
     @IsNotEmpty()
     name: string;
 
-    time:bigint
-    
+    time:times;
+
+    meetingId:bigint;
+
     @IsNotEmpty()
-    timesIds:bigint[]
+    timesIds:times[]
 
 }
 

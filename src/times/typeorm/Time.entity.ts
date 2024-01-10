@@ -17,8 +17,8 @@ export class times {
   @Column()
   time: string;
 
-  @ManyToOne(() => dates, m => m.id)
-  date:bigint;
+  @ManyToOne(() => dates, m => m.times)
+  date:dates;
 
   @OneToMany(() => participations, p => p.time)
   participations:participations[];

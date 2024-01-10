@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { meetings } from 'src/meetings/typeorm/Meetings.entity';
 import { times } from 'src/times/typeorm/Time.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
@@ -16,11 +15,11 @@ export class participations {
   @Column()
   name: string;
 
-  @ManyToOne(() => meetings, m => m.id, { cascade: true })
-  meeting:bigint;
+  @Column({ type: 'bigint' })
+  meetingId: bigint;
 
-  @ManyToOne(() => times, t => t.id, { cascade: true , onDelete: 'CASCADE' })
-  time:bigint;
+  @ManyToOne(() => times, t => t.participations, { cascade: true , onDelete: 'CASCADE' })
+  time: times;
  
 }
 

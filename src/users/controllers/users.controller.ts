@@ -43,11 +43,11 @@ export class UsersController {
           password: ''
         });
         if (user.email) {
-          return (
+          return ([
             {
               name: user.name,
               email: user.email
-            })
+            }])
   
         }
       }else{

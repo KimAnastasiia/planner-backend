@@ -13,9 +13,9 @@ export class ParticipationService {
         private participationRepository: Repository<participations>,
     ) { }
 
-    async getParticipation(meeting:bigint): Promise<participations[]> {
+    async getParticipation(meetingId): Promise<participations[]> {
         try {
-          return await this.participationRepository.find({ where: {meeting},relations: ['time',"time.date", "meeting"], });
+          return await this.participationRepository.find({ where: {meetingId},relations: ['time',"time.date"], });
         } catch (err) {
           console.log(err);
         }
