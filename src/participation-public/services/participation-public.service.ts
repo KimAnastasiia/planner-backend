@@ -27,6 +27,7 @@ export class ParticipationPublicService {
             return await this.participationPublicRepository.save(newParticipation);
         } catch (err) {
             console.log(err);
+            throw new Error('error in post participations');
         }
     }
 }

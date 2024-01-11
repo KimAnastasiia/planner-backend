@@ -38,10 +38,10 @@ export class ParticipationPublicController {
         return { messsage: "done" };
       } catch (error) {
         console.error(error);
-        return {
+        throw new HttpException({
           success: false,
           error: 'Failed to create participation.',
-        }; // Handle errors appropriately
+        }, HttpStatus.BAD_REQUEST);
       }
     }
 }
