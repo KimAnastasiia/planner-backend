@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ParticipationController } from './controllers/participation.controller';
 import { ParticipationService } from './servicies/participation.service';
 import { participations } from './typeorm/Participation.entity';
@@ -14,14 +14,6 @@ import { MeetingsService } from 'src/meetings/services/meetings.service';
 })
 export class ParticipationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
-
-    consumer.apply(AuthorizationMiddleware).forRoutes(
-        {
-          path: "participation/:meetingId",
-          method: RequestMethod.GET
-        }
-      )
-   
+    consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
   }
 }
