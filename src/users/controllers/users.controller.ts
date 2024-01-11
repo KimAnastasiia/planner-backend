@@ -40,10 +40,10 @@ export class UsersController {
       }
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to get user.',
-      }; // Handle errors appropriately
+      }, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -79,10 +79,10 @@ export class UsersController {
       }
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to create user.',
-      }; // Handle errors appropriately
+      }, HttpStatus.BAD_REQUEST);
     }
   }
   @Post("/verification")
@@ -115,10 +115,7 @@ export class UsersController {
           })
 
       }else{
-        throw new HttpException({
-          success: false,
-          error: 'Failed to verificate user.',
-        }, HttpStatus.BAD_REQUEST);
+        throw new Error('Failed to verificate user.');
       }
     } catch (error) {
       console.error(error);

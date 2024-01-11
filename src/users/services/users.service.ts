@@ -16,21 +16,13 @@ export class UsersService {
     @InjectRepository(users)
     private userRepository: Repository<users>,
   ) {}
-/*
-  async getUsers(): Promise<users[]> {
-    try {
-      //find() return list like get
-      return await this.userRepository.find();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  */
+
   async getUser(email:string): Promise<users[] | undefined> {
     try {
       return await this.userRepository.find({ where: { email } });
     } catch (err) {
       console.log(err);
+      throw new Error('error in get user by email');
     }
   }
   async postUser(userDetails:CreateUserDto): Promise<users> {
@@ -40,6 +32,7 @@ export class UsersService {
       return await this.userRepository.save(newUser);
     } catch (err) {
       console.log(err);
+      throw new Error('error in post user');
     }
   }
   async postVerificateUser(userDetails:VerificateUserDto): Promise<users[]> {
@@ -53,6 +46,7 @@ export class UsersService {
       });
     } catch (err) {
       console.log(err);
+      throw new Error('error in postVerificate user');
     }
   }
 }
