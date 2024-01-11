@@ -15,12 +15,15 @@ export class MeetingsService {
     private meetingRepository: Repository<meetings>,
   ) { }
 
-  async getMeeting(id: bigint): Promise<meetings[]> {
-    try {
-      return await this.meetingRepository.find({ where: { id: id }, relations: ['dates', 'dates.times'], });
-    } catch (err) {
-      console.log(err);
-    }
+  async getMeeting(email:string, id: bigint): Promise<meetings[]> {
+
+      const meeting= await this.meetingRepository.find({ where: { id: id }, relations: ['dates', 'dates.times'], });
+      if(email==meeting[0].userEmail){
+        return meeting
+      }else{
+        throw new Error('User is not owner of meeting');
+      }
+  
   }
   async getMeetingsByEmail(userEmail: string): Promise<meetings[]> {
     try {
@@ -34,7 +37,7 @@ export class MeetingsService {
 
     if (email == updateData.userEmail) {
 
-      const existingMeeting = await this.getMeeting(updateData.id);
+      const existingMeeting = await this.getMeeting(email, updateData.id);
       const curMeeting = existingMeeting[0]
 
       if (!curMeeting) {

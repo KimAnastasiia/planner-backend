@@ -18,7 +18,7 @@ export class ParticipationService {
 
     async getParticipation(userEmail, meetingId): Promise<participations[]> {
     
-        const meetingDetails = await this.meetingsService.getMeeting(meetingId);
+        const meetingDetails = await this.meetingsService.getMeeting(userEmail, meetingId);
         if(meetingDetails[0].userEmail==userEmail) {
             return await this.participationRepository.find({ where: {meetingId},relations: ['time',"time.date"]});
         }else{

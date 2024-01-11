@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Module,NestModule,MiddlewareConsumer,RequestMethod } from '@nestjs/common';
+import { Module,NestModule,MiddlewareConsumer} from '@nestjs/common';
 import { MeetingsController } from './controllers/meetings.controller';
 import { MeetingsService } from './services/meetings.service';
 import { meetings } from './typeorm/Meetings.entity';
@@ -18,25 +18,6 @@ import { times } from 'src/times/typeorm/Time.entity';
 })
 export class MeetingsModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-      //consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
-  
-      consumer.apply(AuthorizationMiddleware).forRoutes(
-          {
-            path: "meetings",
-            method: RequestMethod.POST
-          },
-          {
-            path: "meetings/list",
-            method: RequestMethod.GET
-          }
-          ,
-          {
-            path: "meetings",
-            method: RequestMethod.PUT
-          }
-  
-  
-        )
-     
+      consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
     }
   }

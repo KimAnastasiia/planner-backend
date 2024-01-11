@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
-import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put, Param } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put,HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
 import { MeetingUpdateDto } from 'src/dtos/meetingUpdate.dto';
 
@@ -12,17 +12,18 @@ export class MeetingsController {
 
   constructor(private readonly meetingsService: MeetingsService) { }
   @Get()
-  async getMeeting(@Query() query) {
+  async getMeeting(@Query() query, @Req() request: Request) {
     const id = query["meetingId"]
+    const email = request["userEmail"]
     try {
-      const meeting = await this.meetingsService.getMeeting(id);
+      const meeting = await this.meetingsService.getMeeting(email, id);
       return meeting;
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to get meeting.',
-      }; // Handle errors appropriately
+      }, HttpStatus.BAD_REQUEST);
     }
   }
   @Put() // Assuming you are passing the meetingId as part of the URL
