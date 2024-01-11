@@ -9,11 +9,11 @@ export class ParticipationController {
 
   constructor(private readonly participationService: ParticipationService) { }
   
-  @Get(":meetingId")
-  async getMeeting(@Param('meetingId') meetingId: bigint,  @Req() request: Request ) {
+  @Get(":meetingId/:token")
+  async getMeeting(@Param('meetingId') meetingId: bigint, @Param('token') token: string,  @Req() request: Request ) {
     const userEmail = request["userEmail"]
     try {
-      const participation = await this.participationService.getParticipation(userEmail, meetingId);
+      const participation = await this.participationService.getParticipation(userEmail, meetingId,token);
       return participation;
     } catch (error) {
       console.error(error);

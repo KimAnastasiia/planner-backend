@@ -14,9 +14,10 @@ export class MeetingsController {
   @Get()
   async getMeeting(@Query() query, @Req() request: Request) {
     const id = query["meetingId"]
+    const token = query["token"]
     const email = request["userEmail"]
     try {
-      const meeting = await this.meetingsService.getMeeting(email, id);
+      const meeting = await this.meetingsService.getMeeting(email, id, token);
       return meeting;
     } catch (error) {
       console.error(error);

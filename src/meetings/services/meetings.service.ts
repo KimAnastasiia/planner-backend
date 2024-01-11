@@ -15,9 +15,9 @@ export class MeetingsService {
     private meetingRepository: Repository<meetings>,
   ) { }
 
-  async getMeeting(email:string, id: bigint): Promise<meetings[]> {
+  async getMeeting(email:string, id: bigint, token:string): Promise<meetings[]> {
 
-      const meeting= await this.meetingRepository.find({ where: { id: id }, relations: ['dates', 'dates.times'], });
+      const meeting= await this.meetingRepository.find({ where: { id: id, token:token }, relations: ['dates', 'dates.times'], });
       if(email==meeting[0].userEmail){
         return meeting
       }else{
@@ -37,7 +37,7 @@ export class MeetingsService {
 
     if (email == updateData.userEmail) {
 
-      const existingMeeting = await this.getMeeting(email, updateData.id);
+      const existingMeeting = await this.getMeeting(email, updateData.id, updateData.token);
       const curMeeting = existingMeeting[0]
 
       if (!curMeeting) {

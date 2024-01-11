@@ -20,5 +20,7 @@ export class createMeetingDto{
     onlineConference:string;
     
     dates:dates[]
+
+    token:string
 }
 
