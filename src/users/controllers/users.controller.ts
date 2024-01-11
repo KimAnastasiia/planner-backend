@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe, HttpStatus, HttpException  } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
