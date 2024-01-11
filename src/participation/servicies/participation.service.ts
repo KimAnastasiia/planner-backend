@@ -32,7 +32,7 @@ export class ParticipationService {
             const newParticipation = await this.participationRepository.create(participationDetails);
             return await this.participationRepository.save(newParticipation);
         } catch (err) {
-            console.log(err);
+            throw new Error('Failed to create participation.');
         }
     }
 }
