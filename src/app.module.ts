@@ -11,12 +11,12 @@ import { MeetingsModule } from './meetings/meetings.module';
 import { DateModule } from './date/date.module';
 import { dates } from './date/typeorm/Date.entity';
 import { times } from './times/typeorm/Time.entity';
-import { SelectedTimesService } from './selected-times/services/selected-times.service';
 import { SelectedTimesModule } from './selected-times/selected-times.module';
 import { ParticipationModule } from './participation/participation.module';
 import { participations } from './participation/typeorm/Participation.entity';
 import { TimesModule } from './times/times.module';
 import { ParticipationPublicModule } from './participation-public/participation-public.module';
+import { MeetingsPublicModule } from './meetings-public/meetings-public.module';
 
 @Module({
   imports: [ 
@@ -30,7 +30,7 @@ import { ParticipationPublicModule } from './participation-public/participation-
     entities:[users,meetings,dates,times, participations],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule, DateModule, SelectedTimesModule, ParticipationModule, TimesModule, ParticipationPublicModule],
+  UsersModule, MeetingsModule, DateModule, SelectedTimesModule, ParticipationModule, TimesModule, ParticipationPublicModule, MeetingsPublicModule],
   controllers: [AppController],
   providers: [AppService],
 })
