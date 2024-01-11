@@ -7,7 +7,7 @@ import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 export class ParticipationPublicController {
     constructor(private readonly participationPublicService: ParticipationPublicService) { }
   
-    @Get(":meetingId/:token")
+    @Get(":meetingId")
     async getMeeting(@Param('meetingId') meetingId: bigint ) {
       try {
         const participation = await this.participationPublicService.getParticipation(meetingId);
@@ -16,7 +16,7 @@ export class ParticipationPublicController {
         console.error(error);
         throw new HttpException({
           success: false,
-          error: 'Failed to verificate user.',
+          error: 'Failed to get participations.',
         }, HttpStatus.BAD_REQUEST);
       }
     }

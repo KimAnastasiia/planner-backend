@@ -14,6 +14,6 @@ import { MeetingsService } from 'src/meetings/services/meetings.service';
 })
 export class ParticipationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthorizationMiddleware).forRoutes('meetings')
+    consumer.apply(AuthorizationMiddleware).forRoutes('participation')
   }
 }

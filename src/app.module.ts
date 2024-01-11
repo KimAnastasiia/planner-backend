@@ -17,7 +17,7 @@ import { ParticipationModule } from './participation/participation.module';
 import { participations } from './participation/typeorm/Participation.entity';
 import { TimesModule } from './times/times.module';
 import { ParticipationPublicModule } from './participation-public/participation-public.module';
-import { ParticipationPublicController } from './participation-public/controller/participation-public.controller';
+
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -31,7 +31,7 @@ import { ParticipationPublicController } from './participation-public/controller
     synchronize:true,
   }), 
   UsersModule, MeetingsModule, DateModule, SelectedTimesModule, ParticipationModule, TimesModule, ParticipationPublicModule],
-  controllers: [AppController, ParticipationPublicController],
-  providers: [AppService, SelectedTimesService ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
