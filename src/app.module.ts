@@ -11,7 +11,6 @@ import { MeetingsModule } from './meetings/meetings.module';
 import { DateModule } from './date/date.module';
 import { dates } from './date/typeorm/Date.entity';
 import { times } from './times/typeorm/Time.entity';
-import { SelectedTimesModule } from './selected-times/selected-times.module';
 import { ParticipationModule } from './participation/participation.module';
 import { participations } from './participation/typeorm/Participation.entity';
 import { TimesModule } from './times/times.module';
@@ -30,7 +29,7 @@ import { MeetingsPublicModule } from './meetings-public/meetings-public.module';
     entities:[users,meetings,dates,times, participations],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule, DateModule, SelectedTimesModule, ParticipationModule, TimesModule, ParticipationPublicModule, MeetingsPublicModule],
+  UsersModule, MeetingsModule, DateModule, ParticipationModule, TimesModule, ParticipationPublicModule, MeetingsPublicModule],
   controllers: [AppController],
   providers: [AppService],
 })
