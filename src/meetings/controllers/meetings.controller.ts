@@ -5,7 +5,6 @@ import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
 import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put,HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
-import { MeetingUpdateDto } from 'src/dtos/meetingUpdate.dto';
 
 @Controller('meetings')
 export class MeetingsController {
@@ -40,10 +39,10 @@ export class MeetingsController {
       return updatedMeeting;
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to update meeting.',
-      };
+      }, HttpStatus.BAD_REQUEST);
     }
   }
   @Get("/list")
@@ -55,10 +54,10 @@ export class MeetingsController {
       return meetings;
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
         error: 'Failed to get meetings.',
-      }; // Handle errors appropriately
+      }, HttpStatus.BAD_REQUEST);
     }
   }
   @Post()
@@ -81,10 +80,10 @@ export class MeetingsController {
       };
     } catch (error) {
       console.error(error);
-      return {
+      throw new HttpException({
         success: false,
-        error: 'Failed to create meeting.',
-      }; // Handle errors appropriately
+        error: 'Failed to create meetings.',
+      }, HttpStatus.BAD_REQUEST);
     }
   }
 }
