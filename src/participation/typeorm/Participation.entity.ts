@@ -15,6 +15,9 @@ export class participations {
   @Column()
   name: string;
 
+  @Column()
+  token: string;
+
   @Column({ type: 'bigint' })
   meetingId: bigint;
 

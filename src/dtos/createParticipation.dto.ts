@@ -12,11 +12,13 @@ export class createParticipationDto {
     @IsNotEmpty()
     name: string;
 
+    token: string;
+
     time:times;
 
     meetingId:bigint;
 
-    @IsNotEmpty()
+
     timesIds:times[]
 
 }

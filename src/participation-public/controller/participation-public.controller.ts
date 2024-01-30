@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Req, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ParticipationPublicService } from '../services/participation-public.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 
@@ -20,18 +20,19 @@ export class ParticipationPublicController {
         }, HttpStatus.BAD_REQUEST);
       }
     }
+
     @Post()
     @UsePipes(new ValidationPipe())
-  
-    async createMeeting(
-  
+    async createParticipation(
       @Body() participationData: createParticipationDto,
-  
+      @Req() request: Request
     ) {
-  
+      const voterToken = request["voterToken"]
+      
       try {
   
         for (let i = 0; i < participationData.timesIds.length; i++) {
+          participationData.token=voterToken
           participationData.time = participationData.timesIds[i]
           await this.participationPublicService.postParticipation(participationData);
         }
