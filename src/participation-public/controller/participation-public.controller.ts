@@ -36,7 +36,7 @@ export class ParticipationPublicController {
           participationData.time = participationData.timesIds[i]
           await this.participationPublicService.postParticipation(participationData);
         }
-        return { messsage: "done" };
+        return { token: voterToken };
       } catch (error) {
         console.error(error);
         throw new HttpException({
