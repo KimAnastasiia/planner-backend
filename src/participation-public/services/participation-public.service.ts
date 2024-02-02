@@ -30,4 +30,17 @@ export class ParticipationPublicService {
             throw new Error('error in post participations');
         }
     }
+    async deleteParticipation(meetingId:bigint, token: string): Promise<any> {
+        try {
+            const participations = await this.participationPublicRepository.find({ where: { 
+                token: token,
+                meetingId: meetingId 
+            }});
+            await this.participationPublicRepository.remove(participations);
+            return { success: true };
+        } catch (err) {
+            console.log(err);
+            return { success: false, error: 'Failed to delete participations' };
+        }
+    }
 }
