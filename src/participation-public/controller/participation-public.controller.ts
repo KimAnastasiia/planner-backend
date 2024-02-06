@@ -2,10 +2,12 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Put, Param, Req, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ParticipationPublicService } from '../services/participation-public.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
-
+import { MeetingsPublicService } from 'src/meetings-public/services/meetings-public.service';
+import { outlookEmail, transporter } from 'src/utils/emailData';
 @Controller('participation-public')
 export class ParticipationPublicController {
-  constructor(private readonly participationPublicService: ParticipationPublicService) { }
+  constructor(private readonly participationPublicService: ParticipationPublicService,
+    private meetingsService: MeetingsPublicService) { }
 
   @Get(":meetingId")
   async getMeeting(@Param('meetingId') meetingId: bigint) {
@@ -25,7 +27,7 @@ export class ParticipationPublicController {
   @UsePipes(new ValidationPipe())
   async createParticipation(
     @Body() participationData: createParticipationDto,
-    @Req() request?: Request
+    @Req() request?: Request,
   ) {
     const voterToken = request["voterToken"]
 
@@ -36,7 +38,26 @@ export class ParticipationPublicController {
         participationData.time = participationData.timesIds[i]
         await this.participationPublicService.postParticipation(participationData);
       }
+
+      const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
+
+      // Email options
+      const mailOptions = {
+        from: outlookEmail,
+        to: organizerData[0].userEmail,
+        subject: 'Notification of voting in your meeting ' + organizerData[0].title,
+        text: `Hello, user ${participationData.name} just voted`,
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error('Error occurred:', error.message);
+        }
+        console.log('Email sent successfully!', info.response);
+      });
       return { token: voterToken };
+
     } catch (error) {
       console.error(error);
       throw new HttpException({
@@ -47,13 +68,13 @@ export class ParticipationPublicController {
   }
   @Put()
 
-  async editParticipation (@Req() request: Request, @Body() participationData: createParticipationDto,) {
+  async editParticipation(@Req() request: Request, @Body() participationData: createParticipationDto,) {
     try {
       const voterToken = request["voterToken"]
-      const answer = await this.participationPublicService.deleteParticipation(participationData.meetingId,voterToken);
+      const answer = await this.participationPublicService.deleteParticipation(participationData.meetingId, voterToken);
 
-      if(answer){
-        
+      if (answer) {
+
         try {
 
           for (let i = 0; i < participationData.timesIds.length; i++) {
@@ -79,8 +100,8 @@ export class ParticipationPublicController {
       }, HttpStatus.BAD_REQUEST);
     }
   }
-    
-  
-  
+
+
+
 }
 

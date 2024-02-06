@@ -17,7 +17,7 @@ export class createParticipationDto {
     time:times;
 
     meetingId:bigint;
-
+    userToken: string;
 
     timesIds:times[]
 
