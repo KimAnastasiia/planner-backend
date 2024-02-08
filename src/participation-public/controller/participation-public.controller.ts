@@ -82,6 +82,25 @@ export class ParticipationPublicController {
             participationData.time = participationData.timesIds[i]
             await this.participationPublicService.postParticipation(participationData);
           }
+          const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
+
+          // Email options
+          const mailOptions = {
+            from: outlookEmail,
+            to: organizerData[0].userEmail,
+            subject: 'Notification of voting changes at your meeting ' + organizerData[0].title,
+            text: `Hello, user ${participationData.name} just changed his vote`,
+          };
+    
+          // Send email
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return console.error('Error occurred:', error.message);
+            }
+            console.log('Email sent successfully!', info.response);
+          });
+        
+
           return { token: voterToken };
         } catch (error) {
           console.error(error);
