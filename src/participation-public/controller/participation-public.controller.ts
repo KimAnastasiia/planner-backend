@@ -26,6 +26,7 @@ export class ParticipationPublicController {
   @Post()
   @UsePipes(new ValidationPipe())
   async createParticipation(
+
     @Body() participationData: createParticipationDto,
     @Req() request?: Request,
   ) {
@@ -33,12 +34,10 @@ export class ParticipationPublicController {
 
     try {
 
-      for (let i = 0; i < participationData.timesIds.length; i++) {
-        participationData.token = voterToken
-        participationData.time = participationData.timesIds[i]
-        await this.participationPublicService.postParticipation(participationData);
-      }
-
+      participationData.token = voterToken
+   
+      await this.participationPublicService.postParticipation(participationData);
+      
       const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
 
       // Email options
@@ -76,7 +75,7 @@ export class ParticipationPublicController {
       if (answer) {
 
         try {
-
+    
           for (let i = 0; i < participationData.timesIds.length; i++) {
             participationData.token = voterToken
             participationData.time = participationData.timesIds[i]
