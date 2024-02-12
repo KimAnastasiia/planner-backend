@@ -20,7 +20,14 @@ export class ParticipationPublicService {
         }
 
     }
+    async getParticipationByUserTokenAndTimeId(token:string, timeId:bigint): Promise<participations[]> {
+        try {
+            return await this.participationPublicRepository.find({ where: {token, time:{id:timeId}},relations: ['time']});
+        } catch (error) {
+            throw new Error('error in get participations');
+        }
 
+    }
     async postParticipation(participationDetails: createParticipationDto): Promise<participations> {
         try {
             const newParticipation = await this.participationPublicRepository.create(participationDetails);
@@ -40,7 +47,24 @@ export class ParticipationPublicService {
             return { success: true };
         } catch (err) {
             console.log(err);
-            return { success: false, error: 'Failed to delete participations' };
+            throw new Error('Failed to delete participations');
+        }
+    }
+    async deleteParticipationByTimeId(time:bigint, token: string): Promise<any> {
+        try {
+            const participations = await this.participationPublicRepository.find({ where: { 
+                token: token,
+                time: {id:time}
+            }});
+            if(participations){
+                await this.participationPublicRepository.remove(participations);
+                return { success: true };
+            }else{
+                throw new Error('Failed to delete participations');
+            }
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to delete participations');
         }
     }
 }

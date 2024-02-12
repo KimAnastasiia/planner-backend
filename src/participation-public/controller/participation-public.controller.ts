@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, HttpException, HttpStatus, Put, Param, Req, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Delete, HttpStatus, Put, Param, Req, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ParticipationPublicService } from '../services/participation-public.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 import { MeetingsPublicService } from 'src/meetings-public/services/meetings-public.service';
@@ -33,30 +33,38 @@ export class ParticipationPublicController {
     const voterToken = request["voterToken"]
 
     try {
+      const exist = await this.participationPublicService.getParticipationByUserTokenAndTimeId(voterToken,participationData.time.id )
+      //i have to check if this participation already exist for dont do post more then 1 time with same info
+      if(exist.length==0 || !exist){
 
-      participationData.token = voterToken
-   
-      await this.participationPublicService.postParticipation(participationData);
-      
-      const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
+        participationData.token = voterToken
+    
+        await this.participationPublicService.postParticipation(participationData);
+        
+        const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
 
-      // Email options
-      const mailOptions = {
-        from: outlookEmail,
-        to: organizerData[0].userEmail,
-        subject: 'Notification of voting in your meeting ' + organizerData[0].title,
-        text: `Hello, user ${participationData.name} just voted`,
-      };
+        // Email options
+        const mailOptions = {
+          from: outlookEmail,
+          to: organizerData[0].userEmail,
+          subject: 'Notification of voting in your meeting ' + organizerData[0].title,
+          text: `Hello, user ${participationData.name} just voted`,
+        };
 
-      // Send email
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.error('Error occurred:', error.message);
-        }
-        console.log('Email sent successfully!', info.response);
-      });
-      return { token: voterToken };
-
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.error('Error occurred:', error.message);
+          }
+          console.log('Email sent successfully!', info.response);
+        });
+        return { token: voterToken };
+      }else{
+        throw new HttpException({
+          success: false,
+          error: 'Failed to create participation.',
+        }, HttpStatus.BAD_REQUEST);
+      }
     } catch (error) {
       console.error(error);
       throw new HttpException({
@@ -120,6 +128,23 @@ export class ParticipationPublicController {
   }
 
 
-
+ 
+  @Delete(':timeId')
+    
+  public async deleteParticipationByTimeId(@Param('timeId') timeId: bigint,  @Req() request?: Request) {
+    
+    try{
+      const voterToken = request["voterToken"]
+      const answer = await this.participationPublicService.deleteParticipationByTimeId(timeId,voterToken);
+      return answer;
+      
+    } catch (error) {
+      console.error(error);
+      throw new HttpException({
+        success: false,
+        error: 'Failed to update participation.',
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
 }
 
