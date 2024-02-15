@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 // database/user.entity.ts
 import { dates } from 'src/date/typeorm/Date.entity';
+import { invited } from 'src/invited/typeorm/Invited.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 
@@ -28,9 +29,14 @@ export class meetings {
   @OneToMany(() => dates, d => d.meeting, { cascade: true })
   dates:dates[];
   
+  @OneToMany(() => invited, i => i.meeting, { cascade: true })
+  invited:invited[];
+
   @Column()
   token:string;
-  
+
+  @Column()
+  private:boolean;
 }
 
 

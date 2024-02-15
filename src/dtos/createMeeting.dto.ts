@@ -22,5 +22,7 @@ export class createMeetingDto{
     dates:dates[]
 
     token:string
+    
+    private:boolean
 }
 

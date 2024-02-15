@@ -1,5 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';

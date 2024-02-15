@@ -15,6 +15,8 @@ import { participations } from './participation/typeorm/Participation.entity';
 import { TimesModule } from './times/times.module';
 import { ParticipationPublicModule } from './participation-public/participation-public.module';
 import { MeetingsPublicModule } from './meetings-public/meetings-public.module';
+import { InvitedModule } from './invited/invited.module';
+import { invited } from './invited/typeorm/Invited.entity';
 
 @Module({
   imports: [ 
@@ -25,10 +27,10 @@ import { MeetingsPublicModule } from './meetings-public/meetings-public.module';
     username:'root',
     password:"1234",
     database:'planner',
-    entities:[users,meetings,dates,times, participations],
+    entities:[users,meetings,dates,times, participations, invited],
     synchronize:true,
   }), 
-  UsersModule, MeetingsModule, DateModule, ParticipationModule, TimesModule, ParticipationPublicModule, MeetingsPublicModule],
+  UsersModule, MeetingsModule, DateModule, ParticipationModule, TimesModule, ParticipationPublicModule, MeetingsPublicModule, InvitedModule],
   controllers: [AppController],
   providers: [AppService],
 })
