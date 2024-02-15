@@ -3,6 +3,7 @@ import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
 import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put,HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
+import { getUniqueObjects } from 'src/utils/getUniqueValuesFromArrays';
 
 @Controller('meetings')
 export class MeetingsController {
@@ -67,6 +68,7 @@ export class MeetingsController {
     console.log(request["userEmail"]);
 
     console.log(meetingData)
+    meetingData.invited=getUniqueObjects(meetingData.invited)
     meetingData.userEmail = request["userEmail"];
 
     try {

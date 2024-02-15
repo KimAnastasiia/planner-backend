@@ -24,5 +24,7 @@ export class createMeetingDto{
     token:string
     
     private:boolean
+
+    invited:[]
 }
 
