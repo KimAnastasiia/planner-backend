@@ -25,6 +25,6 @@ export class createMeetingDto{
     
     private:boolean
 
-    invited:[]
+    invited: {email:string}[]
 }
 

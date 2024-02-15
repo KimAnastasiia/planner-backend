@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export const getUniqueObjects=(originalArray:[])=> {
+export const getUniqueObjects=(originalArray:{email:string}[])=> {
     const uniqueObjects:any=[];
     const uniqueStrings: Set<string> = new Set();
 

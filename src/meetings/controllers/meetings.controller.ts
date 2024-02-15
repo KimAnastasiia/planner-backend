@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
-import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put,HttpStatus, HttpException } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put, HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
 import { getUniqueObjects } from 'src/utils/getUniqueValuesFromArrays';
-
+import { outlookEmail, transporter } from 'src/utils/emailData';
 @Controller('meetings')
 export class MeetingsController {
 
@@ -26,12 +26,12 @@ export class MeetingsController {
     }
   }
   @Put() // Assuming you are passing the meetingId as part of the URL
-  
+
   async updateMeeting(
     @Body() updateData: createMeetingDto,
     @Req() request: Request // You'll need to create a DTO for the update data
-  ) 
-  { const email = request["userEmail"]
+  ) {
+    const email = request["userEmail"]
 
     try {
       const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData);
@@ -68,15 +68,35 @@ export class MeetingsController {
     console.log(request["userEmail"]);
 
     console.log(meetingData)
-    meetingData.invited=getUniqueObjects(meetingData.invited)
     meetingData.userEmail = request["userEmail"];
+    meetingData.invited = getUniqueObjects(meetingData.invited)
+    meetingData.invited= meetingData.invited.filter((i)=>i.email!=meetingData.userEmail)
+    meetingData.invited.forEach((i) => {
+      // Email options
+      const mailOptions = {
+        from: outlookEmail,
+        to: i.email,
+        subject: 'Notification of invitation to a meeting '+meetingData.title,
+        text: `Hello, you received an invitation from ${meetingData.userEmail} click the link to see details http://localhost:3000/login`,
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error('Error occurred:', error.message);
+        }
+        console.log('Email sent successfully!', info.response);
+      });
+
+    })
+ 
 
     try {
       const meeting = await this.meetingsService.postMeeting(meetingData);
       const meetingId: bigint = meeting.id
-      return { 
+      return {
         meetingId: meetingId,
-        token:meeting.token 
+        token: meeting.token
       };
     } catch (error) {
       console.error(error);
