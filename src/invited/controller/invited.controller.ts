@@ -11,8 +11,8 @@ export class InvitedController {
     async getMeeting(@Req() request: Request) {
         const email = request["userEmail"]
         try {
-        const invitations = await this.invitedService.getInvitations(email);
-        return invitations;
+            const invitations = await this.invitedService.getInvitations(email);
+            return invitations;
         } catch (error) {
         console.error(error);
         throw new HttpException({

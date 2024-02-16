@@ -15,7 +15,7 @@ export class InvitedService {
     async getInvitations(email:string): Promise<invited[]> {
 
       try{
-          const invitations = await this.invitationsRepository.find({ where: { email }, relations: ['meeting'], });
+          const invitations = await this.invitationsRepository.find({ where: { email }, relations: ['meeting',"meeting.dates" ], });
           return invitations
       }catch(err){
           throw new Error('Failed to get invitations.');

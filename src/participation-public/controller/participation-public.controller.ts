@@ -10,7 +10,7 @@ export class ParticipationPublicController {
     private meetingsService: MeetingsPublicService) { }
 
   @Get(":meetingId")
-  async getMeeting(@Param('meetingId') meetingId: bigint) {
+  async getParticipation(@Param('meetingId') meetingId: bigint) {
     try {
       const participation = await this.participationPublicService.getParticipation(meetingId);
       return participation;

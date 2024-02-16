@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { participations } from '../typeorm/Participation.entity';
 import { Repository } from 'typeorm'
-import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 import { MeetingsService } from 'src/meetings/services/meetings.service';
+import { createPrivateParticipationDto } from 'src/dtos/createPrivateParticipation.dto';
 
 @Injectable()
 export class ParticipationService {
@@ -27,7 +26,7 @@ export class ParticipationService {
         
     }
 
-    async postParticipation(participationDetails: createParticipationDto): Promise<participations> {
+    async postParticipation(participationDetails: createPrivateParticipationDto): Promise<participations> {
         try {
             const newParticipation = await this.participationRepository.create(participationDetails);
             return await this.participationRepository.save(newParticipation);

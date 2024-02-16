@@ -4,7 +4,7 @@ import { MeetingsService } from '../services/meetings.service';
 import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put, HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
 import { getUniqueObjects } from 'src/utils/getUniqueValuesFromArrays';
-import { outlookEmail, transporter } from 'src/utils/emailData';
+
 @Controller('meetings')
 export class MeetingsController {
 
@@ -71,26 +71,7 @@ export class MeetingsController {
     meetingData.userEmail = request["userEmail"];
     meetingData.invited = getUniqueObjects(meetingData.invited)
     meetingData.invited= meetingData.invited.filter((i)=>i.email!=meetingData.userEmail)
-    meetingData.invited.forEach((i) => {
-      // Email options
-      const mailOptions = {
-        from: outlookEmail,
-        to: i.email,
-        subject: 'Notification of invitation to a meeting '+meetingData.title,
-        text: `Hello, you received an invitation from ${meetingData.userEmail} click the link to see details http://localhost:3000/login`,
-      };
-
-      // Send email
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.error('Error occurred:', error.message);
-        }
-        console.log('Email sent successfully!', info.response);
-      });
-
-    })
- 
-
+    
     try {
       const meeting = await this.meetingsService.postMeeting(meetingData);
       const meetingId: bigint = meeting.id
