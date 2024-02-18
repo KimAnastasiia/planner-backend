@@ -19,6 +19,7 @@ export class MeetingsController {
       return meeting;
     } catch (error) {
       console.error(error);
+      
       throw new HttpException({
         success: false,
         error: 'Failed to get meeting.',

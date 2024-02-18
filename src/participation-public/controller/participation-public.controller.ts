@@ -7,7 +7,7 @@ import { outlookEmail, transporter } from 'src/utils/emailData';
 @Controller('participation-public')
 export class ParticipationPublicController {
   constructor(private readonly participationPublicService: ParticipationPublicService,
-    private meetingsService: MeetingsPublicService) { }
+    private meetingsPublicService: MeetingsPublicService) { }
 
   @Get(":meetingId")
   async getParticipation(@Param('meetingId') meetingId: bigint) {
@@ -41,7 +41,7 @@ export class ParticipationPublicController {
     
         await this.participationPublicService.postParticipation(participationData);
         
-        const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
+        const organizerData = await this.meetingsPublicService.getMeeting(participationData.meetingId, participationData.userToken);
 
         // Email options
         const mailOptions = {
@@ -89,7 +89,7 @@ export class ParticipationPublicController {
             participationData.time = participationData.timesIds[i]
             await this.participationPublicService.postParticipation(participationData);
           }
-          const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.userToken);
+          const organizerData = await this.meetingsPublicService.getMeeting(participationData.meetingId, participationData.userToken);
 
           // Email options
           const mailOptions = {

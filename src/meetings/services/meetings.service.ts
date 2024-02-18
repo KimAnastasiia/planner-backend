@@ -17,12 +17,16 @@ export class MeetingsService {
 
   async getMeeting(email:string, id: bigint, token:string): Promise<meetings[]> {
 
-      const meeting= await this.meetingRepository.find({ where: { id: id, token:token }, relations: ['dates', 'dates.times'], });
-      if(email==meeting[0].userEmail){
-        return meeting
-      }else{
-        throw new Error('User is not owner of meeting');
-      }
+    const meeting= await this.meetingRepository.find({ where: { id: id, token:token,userEmail: email }, relations: ['dates', 'dates.times'], });
+  
+    return meeting
+  
+  }
+  async getMeetingById(id: bigint): Promise<meetings[]> {
+
+    const meeting= await this.meetingRepository.find({ where: { id: id }, relations: ['invited']});
+  
+    return meeting
   
   }
   async getMeetingsByEmail(userEmail: string): Promise<meetings[]> {
