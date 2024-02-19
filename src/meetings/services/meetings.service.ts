@@ -15,25 +15,19 @@ export class MeetingsService {
     private meetingRepository: Repository<meetings>,
   ) { }
 
-  async getMeeting(email:string, id: bigint, token:string): Promise<meetings[]> {
-
-    const meeting= await this.meetingRepository.find({ where: { id: id, token:token,userEmail: email }, relations: ['dates', 'dates.times'], });
-  
-    return meeting
-  
-  }
-  async getMeetingById(id: bigint): Promise<meetings[]> {
-
-    const meeting= await this.meetingRepository.find({ where: { id: id }, relations: ['invited']});
-  
-    return meeting
-  
+  async getMeeting(id: bigint, token:string): Promise<meetings[]> {
+    try {
+      const meeting= await this.meetingRepository.find({ where: { id: id, token:token}, relations: ['dates', 'dates.times', "invited"], });
+      return meeting
+    } catch (err) {
+      throw new Error('Error in get meeting');
+    }
   }
   async getMeetingsByEmail(userEmail: string): Promise<meetings[]> {
     try {
       return await this.meetingRepository.find({ where: { userEmail }, select: ['id', 'title', 'descriptions', 'location', 'onlineConference', "token"], relations: ['dates', 'dates.times'], });
     } catch (err) {
-      throw new Error('Error in get meeting by email');
+      throw new Error('Error in get meetings');
     }
   }
 
@@ -41,7 +35,7 @@ export class MeetingsService {
 
     if (email == updateData.userEmail) {
 
-      const existingMeeting = await this.getMeeting(email, updateData.id, updateData.token);
+      const existingMeeting = await this.getMeeting(updateData.id, updateData.token);
       const curMeeting = existingMeeting[0]
 
       if (!curMeeting) {

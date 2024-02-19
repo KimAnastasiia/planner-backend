@@ -7,7 +7,7 @@ export class createPrivateParticipationDto {
 
     @IsNotEmpty()
     name: string;
-
+    meetingToken?:string;
     time:times;
     userEmail:string;
     meetingId:bigint;

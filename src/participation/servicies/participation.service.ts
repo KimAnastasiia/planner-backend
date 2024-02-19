@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { participations } from '../typeorm/Participation.entity';
 import { Repository } from 'typeorm'
-import { MeetingsService } from 'src/meetings/services/meetings.service';
 import { createPrivateParticipationDto } from 'src/dtos/createPrivateParticipation.dto';
 
 @Injectable()
@@ -11,16 +10,13 @@ export class ParticipationService {
 
     constructor(
         @InjectRepository(participations)
-        private participationRepository: Repository<participations>,
-        private meetingsService: MeetingsService
+        private participationRepository: Repository<participations>
     ) { }
 
-    async getParticipation(userEmail, meetingId, token): Promise<participations[]> {
-    
-        const meetingDetails = await this.meetingsService.getMeeting(userEmail, meetingId, token);
-        if(meetingDetails[0].userEmail==userEmail) {
+    async getParticipation(meetingId): Promise<participations[]> {
+        try{
             return await this.participationRepository.find({ where: {meetingId},relations: ['time',"time.date"]});
-        }else{
+        }catch(err){
             throw new Error('Actual user is not the owner of meeting');
         }
         
@@ -32,6 +28,19 @@ export class ParticipationService {
             return await this.participationRepository.save(newParticipation);
         } catch (err) {
             throw new Error('Failed to create participation.');
+        }
+    }
+    async deleteParticipation(meetingId:bigint, userEmail:string): Promise<any> {
+        try {
+            const participations = await this.participationRepository.find({ where: {
+                meetingId: meetingId,
+                userEmail: userEmail
+            }});
+            await this.participationRepository.remove(participations);
+            return { success: true };
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to delete participations');
         }
     }
 }
