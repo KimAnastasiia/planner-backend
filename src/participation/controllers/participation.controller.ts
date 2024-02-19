@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, Put, UsePipes, ValidationPipe, Param, Req,HttpStatus, HttpException  } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UsePipes, ValidationPipe, Param, Delete, Req,HttpStatus, HttpException  } from '@nestjs/common';
 import { ParticipationService } from '../servicies/participation.service';
 import { Request } from 'express';
 import { createPrivateParticipationDto } from 'src/dtos/createPrivateParticipation.dto';
@@ -123,6 +123,23 @@ export class ParticipationController {
       throw new HttpException({
         success: false,
         error: 'Failed to create participation.',
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
+  @Delete(':timeId')
+    
+  public async deleteParticipationByTimeId(@Param('timeId') timeId: bigint,  @Req() request?: Request) {
+    
+    try{
+      const userEmail = request["userEmail"]
+      const answer = await this.participationService.deleteParticipationByTimeId(timeId,userEmail);
+      return answer;
+      
+    } catch (error) {
+      console.error(error);
+      throw new HttpException({
+        success: false,
+        error: 'Failed to update participation.',
       }, HttpStatus.BAD_REQUEST);
     }
   }

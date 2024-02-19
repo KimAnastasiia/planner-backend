@@ -25,7 +25,7 @@ export class MeetingsService {
   }
   async getMeetingsByEmail(userEmail: string): Promise<meetings[]> {
     try {
-      return await this.meetingRepository.find({ where: { userEmail }, select: ['id', 'title', 'descriptions', 'location', 'onlineConference', "token"], relations: ['dates', 'dates.times'], });
+      return await this.meetingRepository.find({ where: { userEmail }, select: ['id', 'title', 'descriptions', 'location', 'onlineConference', "token", "private"], relations: ['dates', 'dates.times'], });
     } catch (err) {
       throw new Error('Error in get meetings');
     }
