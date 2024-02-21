@@ -47,6 +47,7 @@ export class MeetingsService {
       curMeeting.descriptions = updateData.descriptions;
       curMeeting.location = updateData.location;
       curMeeting.onlineConference = updateData.onlineConference;
+      //delete dates>times>participations and then add 
       curMeeting.dates = updateData.dates
       curMeeting.private=updateData.private
       if(curMeeting.private){

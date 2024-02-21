@@ -22,7 +22,7 @@ export class InvitedService {
       }
     
     }
-    async deleteInvitations(meetingId:bigint, email:string): Promise<any> {
+    async deleteInvitations(meetingId:bigint, email:string): Promise<{success:boolean}> {
    
       try {
         const invitations = await this.invitationsRepository.find({ 

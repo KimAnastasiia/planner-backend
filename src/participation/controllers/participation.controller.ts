@@ -128,11 +128,11 @@ export class ParticipationController {
   }
   @Delete(':timeId')
     
-  public async deleteParticipationByTimeId(@Param('timeId') timeId: bigint,  @Req() request?: Request) {
+  public async deleteParticipationByTimeIdAndEmail(@Param('timeId') timeId: bigint,  @Req() request?: Request) {
     
     try{
       const userEmail = request["userEmail"]
-      const answer = await this.participationService.deleteParticipationByTimeId(timeId,userEmail);
+      const answer = await this.participationService.deleteParticipationByTimeIdAndEmail(timeId,userEmail);
       return answer;
       
     } catch (error) {

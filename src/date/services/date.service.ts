@@ -24,5 +24,14 @@ export class DateService {
             return { success: false, error: 'Failed to delete date and times and participations.' };
         }
     }
-    
+    async deleteDateByMeeyingId(meetingId: bigint): Promise<any> {
+        try {
+            const date = await this.datesRepository.find({ where: { meeting:{id:meetingId} }});
+            await this.datesRepository.remove(date);
+            return { success: true };
+        } catch (err) {
+            console.log(err);
+            return { success: false, error: 'Failed to delete date and times and participations.' };
+        }
+    }
 }

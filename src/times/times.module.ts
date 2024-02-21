@@ -6,9 +6,11 @@ import { TimesService } from './services/times.service';
 import { TimesController } from './controllers/times.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorizationMiddleware } from 'src/authorizationMiddleware/authorization.middleware';
+import { ParticipationService } from 'src/participation/servicies/participation.service';
+import { participations } from 'src/participation/typeorm/Participation.entity';
 @Module({
-    imports: [TypeOrmModule.forFeature([times])],
-    providers: [TimesService],
+    imports: [TypeOrmModule.forFeature([times]),TypeOrmModule.forFeature([participations])],
+    providers: [TimesService, ParticipationService],
     controllers: [TimesController],
 })
 export class TimesModule implements NestModule {
