@@ -2,6 +2,7 @@
 
 import { IsNotEmpty } from "class-validator";
 import { dates } from "src/date/typeorm/Date.entity";
+import { invited } from "src/invited/typeorm/Invited.entity";
 
 export class createMeetingDto{
     
@@ -25,6 +26,6 @@ export class createMeetingDto{
     
     private:boolean
 
-    invited: {email:string}[]
+    invited: invited[];
 }
 

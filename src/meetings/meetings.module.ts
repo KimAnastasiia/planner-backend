@@ -9,11 +9,13 @@ import { DateService } from 'src/date/services/date.service';
 import { dates } from 'src/date/typeorm/Date.entity';
 import { TimesService } from 'src/times/services/times.service';
 import { times } from 'src/times/typeorm/Time.entity';
+import { InvitedService } from 'src/invited/services/invited.service';
+import { invited } from 'src/invited/typeorm/Invited.entity';
 
 
 @Module({
-    imports: [TypeOrmModule.forFeature([meetings]), TypeOrmModule.forFeature([dates]), TypeOrmModule.forFeature([times])],
-    providers: [MeetingsService, DateService, TimesService],
+    imports: [TypeOrmModule.forFeature([meetings]), TypeOrmModule.forFeature([dates]), TypeOrmModule.forFeature([times]),TypeOrmModule.forFeature([invited])],
+    providers: [MeetingsService, DateService, TimesService, InvitedService],
     controllers: [MeetingsController],
 })
 export class MeetingsModule implements NestModule {

@@ -1,14 +1,17 @@
 /* eslint-disable prettier/prettier */
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { MeetingsService } from '../services/meetings.service';
-import { Body, Controller, Post, UsePipes, ValidationPipe, Req, Get, Query, Put, HttpStatus, HttpException } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes,Param, ValidationPipe, Delete, Req, Get, Query, Put, HttpStatus, HttpException } from '@nestjs/common';
 import { Request } from 'express';
 import { getUniqueObjects } from 'src/utils/getUniqueValuesFromArrays';
+import { InvitedService } from 'src/invited/services/invited.service';
 
 @Controller('meetings')
 export class MeetingsController {
 
-  constructor(private readonly meetingsService: MeetingsService) { }
+  constructor(private readonly meetingsService: MeetingsService,
+    private readonly invitedService: InvitedService
+    ) { }
   @Get()
   async getMeeting(@Query() query) {
     const id = query["meetingId"]
@@ -85,6 +88,26 @@ export class MeetingsController {
       throw new HttpException({
         success: false,
         error: 'Failed to create meetings.',
+      }, HttpStatus.BAD_REQUEST);
+    }
+  }
+  @Delete(':id/:token')
+    
+  public async deleteMeeting(@Param('id') id: bigint, @Param('token') token: string, @Req() request?: Request) {
+    
+    try{
+      const userEmail = request["userEmail"]
+      const deleted = await this.invitedService.deleteInvitations(id,userEmail )
+      if(deleted){
+        const answer = await this.meetingsService.deleteMeeting(id,token,userEmail);
+        return answer;
+      }
+      
+    } catch (error) {
+      console.error(error);
+      throw new HttpException({
+        success: false,
+        error: 'Failed to delete meeting.',
       }, HttpStatus.BAD_REQUEST);
     }
   }

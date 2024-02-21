@@ -12,7 +12,7 @@ export class MeetingsPublicService {
 
     async getMeeting(id: bigint, token:string): Promise<meetings[]> {
         try {
-            const meeting = await this.meetingRepository.find({ where: { id: id, token: token }, relations: ['dates', 'dates.times'], });
+            const meeting = await this.meetingRepository.find({ where: { id: id, token: token, private:false }, relations: ['dates', 'dates.times'], });
             return meeting
         } catch (error) {
             throw new Error('Error in get meeting');

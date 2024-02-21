@@ -12,7 +12,7 @@ export class MeetingsService {
 
   constructor(
     @InjectRepository(meetings)
-    private meetingRepository: Repository<meetings>,
+    private meetingRepository: Repository<meetings>
   ) { }
 
   async getMeeting(id: bigint, token:string): Promise<meetings[]> {
@@ -48,7 +48,12 @@ export class MeetingsService {
       curMeeting.location = updateData.location;
       curMeeting.onlineConference = updateData.onlineConference;
       curMeeting.dates = updateData.dates
-
+      curMeeting.private=updateData.private
+      if(curMeeting.private){
+        curMeeting.invited=updateData.invited
+      }else{
+        curMeeting.invited=[]
+      }
       // Save the updated meeting
       //await this.meetingRepository.update(String(updateData.id), curMeeting);
       const updatedMeeting = await this.meetingRepository.save(curMeeting);
@@ -65,6 +70,27 @@ export class MeetingsService {
       return await this.meetingRepository.save(newMeeting);
     } catch (err) {
       throw new Error('Error in create meeting');
+    }
+  }
+  async deleteMeeting(id:bigint,token:string,userEmail:string ): Promise<any> {
+    //doesnt work becouse of relations
+    try {
+      const meeting = await this.meetingRepository.find({ 
+        where: { 
+          id: id,
+          token: token,
+          userEmail:userEmail
+        }, 
+        //relations: ['invited',"dates",'dates.times', 'dates.times.participations']
+      });
+      if(meeting){
+        await this.meetingRepository.remove(meeting[0]);
+        return { success: true };
+      }else{
+        throw new Error('Failed to delete meeting');
+      }
+    } catch (err) {
+      throw new Error('Error in delete meeting');
     }
   }
 }
