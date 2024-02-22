@@ -17,7 +17,7 @@ export class MeetingsService {
 
   async getMeeting(id: bigint, token:string): Promise<meetings[]> {
     try {
-      const meeting= await this.meetingRepository.find({ where: { id: id, token:token}, relations: ['dates', 'dates.times', "invited"], });
+      const meeting= await this.meetingRepository.find({ where: { id: id, token:token}, relations: ['dates', 'dates.times', 'dates.times.participations',"invited"], });
       return meeting
     } catch (err) {
       throw new Error('Error in get meeting');
@@ -47,7 +47,6 @@ export class MeetingsService {
       curMeeting.descriptions = updateData.descriptions;
       curMeeting.location = updateData.location;
       curMeeting.onlineConference = updateData.onlineConference;
-      //delete dates>times>participations and then add 
       curMeeting.dates = updateData.dates
       curMeeting.private=updateData.private
       if(curMeeting.private){

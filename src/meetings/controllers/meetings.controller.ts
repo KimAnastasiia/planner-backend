@@ -45,6 +45,43 @@ export class MeetingsController {
     const email = request["userEmail"]
 
     try {
+      const meetingDates = await this.meetingsService.getMeeting(updateData.id,updateData.token)
+      const listOfNewTimesId=[]
+      const listOfAllTimedIds=[]
+      const listOfIdsAllDates=[]
+      const listOfNewIdDates=[]
+
+      meetingDates[0].dates.forEach((d)=>{
+        listOfIdsAllDates.push(d.id)
+        d.times.forEach((t)=>listOfAllTimedIds.push(t.id))
+      })
+
+      updateData.dates.forEach((d)=>{
+        listOfNewIdDates.push(d.id)
+        d.times.forEach((t)=>listOfNewTimesId.push(t.id))
+      })
+
+
+      await Promise.all(
+        listOfAllTimedIds.map(async (tId) => {
+          const exist = listOfNewTimesId.find((nTId) => nTId === tId);
+          if (!exist) {
+              await this.participationService.deleteParticipationByTimeId(tId);
+              await this.timesService.deleteTime(tId)
+          }
+        })
+      );
+
+     await Promise.all(
+      listOfIdsAllDates.map(async (prevD) => {
+          const exist = listOfNewIdDates.find((newD) => newD === prevD);
+          if (!exist) {
+              await this.datesService.deleteDate(prevD);
+          }
+        })
+      );
+
+      await this.invitedService.deleteInvitations(meetingDates[0].id, email)
       const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData);
       return updatedMeeting;
     } catch (error) {

@@ -72,4 +72,16 @@ export class ParticipationService {
             throw new Error('Failed to delete participations');
         }
     }
+    async deleteParticipationByTimeId(timeId:bigint): Promise<{success:boolean}> {
+        try {
+            const participations = await this.participationRepository.find({ where: {
+                time: {id:timeId}
+            }});
+            await this.participationRepository.remove(participations);
+            return { success: true };
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to delete participations');
+        }
+    }
 }

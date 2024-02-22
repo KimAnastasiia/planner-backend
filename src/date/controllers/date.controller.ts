@@ -9,11 +9,5 @@ export class DateController {
 
     constructor(private readonly datesService: DateService) { }
 
-    @Delete(':dateId')
-    
-    public async deleteUser( @Param('dateId') dateId: bigint) {
-        
-        const answer = await this.datesService.deleteDate(dateId);
-        return answer;
-    }
+   
 }
