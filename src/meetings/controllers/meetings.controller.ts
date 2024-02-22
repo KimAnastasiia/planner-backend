@@ -80,10 +80,28 @@ export class MeetingsController {
           }
         })
       );
+      const allParticipationsOfThisMeeting = await this.participationService.getParticipation(meetingDates[0].id)
+      if(allParticipationsOfThisMeeting.length>0){     
+        await Promise.all(
+          allParticipationsOfThisMeeting.map(async(p)=>{
+            if(updateData.invited.length>0){
+              const exist = updateData.invited.find((newI)=>p.userEmail == newI.email)
+              if (!exist) {
+                await this.participationService.deleteParticipation(meetingDates[0].id,p.userEmail);
+              }
+            }else{
+              await this.participationService.deleteParticipation(meetingDates[0].id,p.userEmail);
+            }
+
+          })
+        );
+      }
 
       await this.invitedService.deleteInvitations(meetingDates[0].id, email)
+
       const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData);
       return updatedMeeting;
+
     } catch (error) {
       console.error(error);
       throw new HttpException({
@@ -141,8 +159,9 @@ export class MeetingsController {
     
     try{
       const userEmail = request["userEmail"]
-      const deleted = await this.invitedService.deleteInvitations(id,userEmail )
-      if(deleted.success){
+
+        await this.invitedService.deleteInvitations(id,userEmail )
+   
 
         const meetingDates= await this.meetingsService.getMeeting(id,token)
         console.log(meetingDates)
@@ -158,8 +177,6 @@ export class MeetingsController {
         const answer = await this.meetingsService.deleteMeeting(id,token,userEmail);
 
         return answer;
-      }
-      
     } catch (error) {
       console.error(error);
       throw new HttpException({

@@ -22,23 +22,23 @@ export class InvitedService {
       }
     
     }
-    async deleteInvitations(meetingId:bigint, email:string): Promise<{success:boolean}> {
+    async deleteInvitations(meetingId:bigint, email:string): Promise<{message:string}> {
    
       try {
         const invitations = await this.invitationsRepository.find({ 
           where: {meeting: {id:meetingId}}, 
           relations: ['meeting']});
 
-        if(invitations){
+        if(invitations.length>0){
           if(invitations[0].meeting.userEmail==email){
             invitations
             await this.invitationsRepository.remove(invitations);
-            return { success: true };
+            return { message: "done" };
           }else{
             throw new Error('Failed to delete invited, not owner of meeting');
           }
         }else{
-          throw new Error('Failed to delete invited');
+          return {message:"didnt find this invitations"}
         }
       } catch (err) {
         throw new Error('Error in delete invited');
