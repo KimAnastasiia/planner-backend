@@ -60,26 +60,27 @@ export class MeetingsService {
       // Save the updated meeting
       //await this.meetingRepository.update(String(updateData.id), curMeeting);
       const updatedMeeting = await this.meetingRepository.save(curMeeting);
-
-      newInviteds.forEach((i) => {
-        // Email options
-        const mailOptions = {
-          from: outlookEmail,
-          to: i.email,
-          subject: 'Notification of invitation to a meeting '+updateData.title,
-          text: `Hello, you received an invitation from ${updateData.userEmail} click the link to see details http://localhost:3000/login`,
-        };
-  
-        // Send email
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.error('Error occurred:', error.message);
-          }
-          console.log('Email sent successfully!', info.response);
-        });
-  
-      })
-      
+      if(newInviteds.length>0){
+        
+        newInviteds.forEach((i) => {
+          // Email options
+          const mailOptions = {
+            from: outlookEmail,
+            to: i.email,
+            subject: 'Notification of invitation to a meeting '+updateData.title,
+            text: `Hello, you received an invitation from ${updateData.userEmail} click the link to see details http://localhost:3000/login`,
+          };
+    
+          // Send email
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return console.error('Error occurred:', error.message);
+            }
+            console.log('Email sent successfully!', info.response);
+          });
+    
+        })
+      }
       return updatedMeeting;
     } else {
       throw new Error('User is not creator of this meeting');
@@ -89,6 +90,28 @@ export class MeetingsService {
     try {
       const newMeeting = await this.meetingRepository.create(meetingDetails);
       newMeeting.token = generateRandomToken() + String(Date.now())
+
+      if( meetingDetails?.invited.length>0){
+
+        meetingDetails?.invited?.forEach((i) => {
+          // Email options
+          const mailOptions = {
+            from: outlookEmail,
+            to: i.email,
+            subject: 'Notification of invitation to a meeting '+meetingDetails.title,
+            text: `Hello, you received an invitation from ${meetingDetails.userEmail} click the link to see details http://localhost:3000/login`,
+          };
+    
+          // Send email
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return console.error('Error occurred:', error.message);
+            }
+            console.log('Email sent successfully!', info.response);
+          });
+    
+        })
+      }
       return await this.meetingRepository.save(newMeeting);
     } catch (err) {
       throw new Error('Error in create meeting');
