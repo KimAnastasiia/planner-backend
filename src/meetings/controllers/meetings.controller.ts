@@ -55,13 +55,13 @@ export class MeetingsController {
         listOfIdsAllDates.push(d.id)
         d.times.forEach((t)=>listOfAllTimedIds.push(t.id))
       })
-
+      
       updateData.dates.forEach((d)=>{
         listOfNewIdDates.push(d.id)
         d.times.forEach((t)=>listOfNewTimesId.push(t.id))
       })
-
-
+      const listOfNewInvitedEmails=updateData.invited.filter(iNew => !meetingDates[0].invited.some(iPrev=>iPrev.email==iNew.email))
+      console.log(listOfNewInvitedEmails)
       await Promise.all(
         listOfAllTimedIds.map(async (tId) => {
           const exist = listOfNewTimesId.find((nTId) => nTId === tId);
@@ -99,7 +99,7 @@ export class MeetingsController {
 
       await this.invitedService.deleteInvitations(meetingDates[0].id, email)
 
-      const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData);
+      const updatedMeeting = await this.meetingsService.updateMeeting(email, updateData, listOfNewInvitedEmails);
       return updatedMeeting;
 
     } catch (error) {

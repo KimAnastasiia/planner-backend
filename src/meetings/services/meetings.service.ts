@@ -5,7 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { Repository } from 'typeorm'
 import { generateRandomToken } from 'src/utils/tokens';
-
+import { outlookEmail, transporter } from 'src/utils/emailData';
+type EmailObject = {
+  email: string;
+};
 
 @Injectable()
 export class MeetingsService {
@@ -31,7 +34,7 @@ export class MeetingsService {
     }
   }
 
-  async updateMeeting(email: string, updateData: createMeetingDto): Promise<meetings> {
+  async updateMeeting(email: string, updateData: createMeetingDto, newInviteds: EmailObject[]): Promise<meetings> {
 
     if (email == updateData.userEmail) {
 
@@ -58,6 +61,25 @@ export class MeetingsService {
       //await this.meetingRepository.update(String(updateData.id), curMeeting);
       const updatedMeeting = await this.meetingRepository.save(curMeeting);
 
+      newInviteds.forEach((i) => {
+        // Email options
+        const mailOptions = {
+          from: outlookEmail,
+          to: i.email,
+          subject: 'Notification of invitation to a meeting '+updateData.title,
+          text: `Hello, you received an invitation from ${updateData.userEmail} click the link to see details http://localhost:3000/login`,
+        };
+  
+        // Send email
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.error('Error occurred:', error.message);
+          }
+          console.log('Email sent successfully!', info.response);
+        });
+  
+      })
+      
       return updatedMeeting;
     } else {
       throw new Error('User is not creator of this meeting');
