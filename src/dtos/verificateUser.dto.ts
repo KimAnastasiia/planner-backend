@@ -10,4 +10,6 @@ export class VerificateUserDto{
     @IsNotEmpty()
     @IsEmail()
     email:string
+
+    name?:string
 }

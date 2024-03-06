@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe, HttpStatus, HttpException  } from '@nestjs/common';
+import { Body, Controller, Get, Put, Post, Req, UsePipes, ValidationPipe, HttpStatus, HttpException  } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { objectOfApiKey } from 'src/utils/objectApiKey';
@@ -124,6 +124,20 @@ export class UsersController {
         error: 'Failed to verificate user.',
       }, HttpStatus.BAD_REQUEST);
     
+    }
+  }
+  @Put()
+  async editUser(@Body() userNewData: VerificateUserDto, @Req() request: Request) {
+    const cipher = crypto.createCipher(algorithm, keyEncrypt);
+    userNewData.password = cipher.update(userNewData.password, 'utf8', 'hex') + cipher.final('hex');
+    try {
+      const email = request["userEmail"]
+      return this.usersService.editUse(userNewData, email)
+    } catch (error) {
+      throw new HttpException({
+        success: false,
+        error: 'Failed to edit user.',
+      }, HttpStatus.BAD_REQUEST);
     }
   }
 }

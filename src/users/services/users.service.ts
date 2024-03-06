@@ -49,4 +49,19 @@ export class UsersService {
       throw new Error('error in postVerificate user');
     }
   }
+  async editUse(userNewData: VerificateUserDto, email:string){
+
+    try {
+      const userPrevData=await this.getUser(email)
+      if(!userPrevData){
+        throw new Error('User not found');
+      }
+      userPrevData[0].password=userNewData.password
+      userPrevData[0].name=userNewData.name
+      return await this.userRepository.save(userPrevData);
+    }catch(err){
+      throw new Error('Error in edit user');
+    }
+  }
+
 }
