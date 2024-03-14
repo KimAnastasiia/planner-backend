@@ -132,7 +132,7 @@ export class UsersController {
     userNewData.password = cipher.update(userNewData.password, 'utf8', 'hex') + cipher.final('hex');
     try {
       const email = request["userEmail"]
-      return this.usersService.editUse(userNewData, email)
+      return this.usersService.editUser(userNewData, email)
     } catch (error) {
       throw new HttpException({
         success: false,

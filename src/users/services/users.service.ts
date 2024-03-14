@@ -49,7 +49,7 @@ export class UsersService {
       throw new Error('error in postVerificate user');
     }
   }
-  async editUse(userNewData: VerificateUserDto, email:string){
+  async editUser(userNewData: VerificateUserDto, email:string){
 
     try {
       const userPrevData=await this.getUser(email)

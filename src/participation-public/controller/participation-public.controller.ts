@@ -58,6 +58,23 @@ export class ParticipationPublicController {
           }
           console.log('Email sent successfully!', info.response);
         });
+
+           // Email options
+           const mailOptionsVouter = {
+            from: outlookEmail,
+            to: participationData.userEmail,
+            subject: 'You have successfully voted in meeting ' + organizerData[0].title,
+            text: `Hello, user ${participationData.name}, you can view the votes for this meeting or change yours using this link http://localhost:3000/participate/${organizerData[0].token}/${organizerData[0].id}/${voterToken}`,
+          };
+  
+          // Send email
+          transporter.sendMail(mailOptionsVouter, (error, info) => {
+            if (error) {
+              return console.error('Error occurred:', error.message);
+            }
+            console.log('Email sent successfully!', info.response);
+          });
+  
         return { token: voterToken };
       }else{
         throw new HttpException({

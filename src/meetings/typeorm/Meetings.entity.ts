@@ -37,6 +37,9 @@ export class meetings {
 
   @Column()
   private:boolean;
+
+  @Column()
+  oneToOne:boolean;
 }
 
 

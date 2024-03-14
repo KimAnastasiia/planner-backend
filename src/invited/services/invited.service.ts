@@ -44,4 +44,20 @@ export class InvitedService {
         throw new Error('Error in delete invited');
       }
     }
+    async deleteInvitationsOfInvated(meetingId:bigint, email:string): Promise<{message:string}> {
+   
+      try {
+        const invitations = await this.invitationsRepository.find({ 
+          where: {meeting: {id:meetingId}, email:email}});
+
+        if(invitations.length>0){
+          await this.invitationsRepository.remove(invitations);
+          return { message: "done" };
+        }else{
+          return {message:"didnt find this invitations"}
+        }
+      } catch (err) {
+        throw new Error('Error in delete invited');
+      }
+    }
 }
