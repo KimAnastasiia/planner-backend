@@ -27,5 +27,7 @@ export class createMeetingDto{
     private:boolean
 
     invited: invited[];
+
+    oneToOne:boolean;
 }
 

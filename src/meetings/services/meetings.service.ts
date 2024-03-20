@@ -52,6 +52,7 @@ export class MeetingsService {
       curMeeting.onlineConference = updateData.onlineConference;
       curMeeting.dates = updateData.dates
       curMeeting.private=updateData.private
+      curMeeting.oneToOne=updateData.oneToOne
       if(curMeeting.private){
         curMeeting.invited=updateData.invited
       }else{
