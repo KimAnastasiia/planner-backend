@@ -3,7 +3,7 @@ import { Body, Controller, Get, HttpException, Delete, HttpStatus, Put, Param, R
 import { ParticipationPublicService } from '../services/participation-public.service';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
 import { MeetingsPublicService } from 'src/meetings-public/services/meetings-public.service';
-import { outlookEmail, transporter } from 'src/utils/emailData';
+import { sendEmail } from 'src/utils/sendEmail';
 @Controller('participation-public')
 export class ParticipationPublicController {
   constructor(private readonly participationPublicService: ParticipationPublicService,
@@ -42,39 +42,8 @@ export class ParticipationPublicController {
         await this.participationPublicService.postParticipation(participationData);
         
         const organizerData = await this.meetingsPublicService.getMeeting(participationData.meetingId, participationData.userToken);
-
-        // Email options
-        const mailOptions = {
-          from: outlookEmail,
-          to: organizerData[0].userEmail,
-          subject: 'Notification of voting in your meeting ' + organizerData[0].title,
-          text: `Hello, user ${participationData.name} just voted`,
-        };
-
-        // Send email
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.error('Error occurred:', error.message);
-          }
-          console.log('Email sent successfully!', info.response);
-        });
-
-           // Email options
-           const mailOptionsVouter = {
-            from: outlookEmail,
-            to: participationData.userEmail,
-            subject: 'You have successfully voted in meeting ' + organizerData[0].title,
-            text: `Hello, user ${participationData.name}, you can view the votes for this meeting or change yours using this link http://localhost:3000/participate/${organizerData[0].token}/${organizerData[0].id}/${voterToken}`,
-          };
-  
-          // Send email
-          transporter.sendMail(mailOptionsVouter, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          });
-  
+        await sendEmail(organizerData[0].userEmail,'Notification of voting in your meeting ' + organizerData[0].title,`Hello, user ${participationData.name} just voted`  )
+        await sendEmail(participationData.userEmail,'You have successfully voted in meeting ' + organizerData[0].title,`Hello, user ${participationData.name}, you can view the votes for this meeting or change yours using this link http://localhost:3000/participate/${organizerData[0].token}/${organizerData[0].id}/${voterToken}` )
         return { token: voterToken };
       }else{
         throw new HttpException({
@@ -107,24 +76,8 @@ export class ParticipationPublicController {
             await this.participationPublicService.postParticipation(participationData);
           }
           const organizerData = await this.meetingsPublicService.getMeeting(participationData.meetingId, participationData.userToken);
-
-          // Email options
-          const mailOptions = {
-            from: outlookEmail,
-            to: organizerData[0].userEmail,
-            subject: 'Notification of voting changes at your meeting ' + organizerData[0].title,
-            text: `Hello, user ${participationData.name} just changed his vote`,
-          };
-    
-          // Send email
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          });
-        
-
+          await sendEmail(organizerData[0].userEmail,'Notification of voting changes at your meeting ' + organizerData[0].title,`Hello, user ${participationData.name} just changed his vote`)
+         
           return { token: voterToken };
         } catch (error) {
           console.error(error);

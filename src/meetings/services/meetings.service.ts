@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { createMeetingDto } from 'src/dtos/createMeeting.dto';
 import { Repository } from 'typeorm'
 import { generateRandomToken } from 'src/utils/tokens';
-import { outlookEmail, transporter } from 'src/utils/emailData';
+import { sendEmail } from 'src/utils/sendEmail';
 type EmailObject = {
   email: string;
 };
@@ -62,22 +62,9 @@ export class MeetingsService {
       const updatedMeeting = await this.meetingRepository.save(curMeeting);
       if(newInviteds.length>0){
         
-        newInviteds.forEach((i) => {
-          // Email options
-          const mailOptions = {
-            from: outlookEmail,
-            to: i.email,
-            subject: 'Notification of invitation to a meeting '+updateData.title,
-            text: `Hello, you received an invitation from ${updateData.userEmail} click the link to see details http://localhost:3000/login`,
-          };
-    
-          // Send email
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          });
+        newInviteds.forEach(async(i) => {
+
+         await sendEmail(i.email,'Notification of invitation to a meeting '+updateData.title, `Hello, you received an invitation from ${updateData.userEmail} click the link to see details http://localhost:3000/login`)
     
         })
       }
@@ -93,22 +80,9 @@ export class MeetingsService {
 
       if( meetingDetails?.invited.length>0){
 
-        meetingDetails?.invited?.forEach((i) => {
-          // Email options
-          const mailOptions = {
-            from: outlookEmail,
-            to: i.email,
-            subject: 'Notification of invitation to a meeting '+meetingDetails.title,
-            text: `Hello, you received an invitation from ${meetingDetails.userEmail} click the link to see details http://localhost:3000/login`,
-          };
-    
-          // Send email
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          });
+        meetingDetails?.invited?.forEach(async(i) => {
+       
+          await sendEmail(i.email,'Notification of invitation to a meeting '+meetingDetails.title,  `Hello, you received an invitation from ${meetingDetails.userEmail} click the link to see details http://localhost:3000/login`)
     
         })
       }

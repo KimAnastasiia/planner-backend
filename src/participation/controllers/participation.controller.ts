@@ -4,8 +4,8 @@ import { ParticipationService } from '../servicies/participation.service';
 import { Request } from 'express';
 import { createPrivateParticipationDto } from 'src/dtos/createPrivateParticipation.dto';
 import { MeetingsService } from 'src/meetings/services/meetings.service';
-import { outlookEmail, transporter } from 'src/utils/emailData';
 import { createParticipationDto } from 'src/dtos/createParticipation.dto';
+import { sendEmail } from 'src/utils/sendEmail';
 @Controller('participation')
 export class ParticipationController {
 
@@ -42,24 +42,7 @@ export class ParticipationController {
             await this.participationService.postParticipation(participationData);
           }
           const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.token);
-
-          // Email options
-          const mailOptions = {
-            from: outlookEmail,
-            to: organizerData[0].userEmail,
-            subject: 'Notification of voting changes at your meeting ' + organizerData[0].title,
-            text: `Hello, user ${participationData.name} just changed his vote`,
-          };
-    
-          // Send email
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          });
-        
-
+          await sendEmail(organizerData[0].userEmail,'Notification of voting changes at your meeting ' + organizerData[0].title,`Hello, user ${participationData.name} just changed his vote` )
           return { message: "done" };
         } catch (error) {
           console.error(error);
@@ -97,22 +80,7 @@ export class ParticipationController {
         const invited= organizerData[0].invited.find((i)=>i.email==userEmail)
         if(invited){
           const newParticipation = await this.participationService.postParticipation(participationData);
-          // Email options
-          const mailOptions = {
-            from: outlookEmail,
-            to: organizerData[0].userEmail,
-            subject: 'Notification of voting in your meeting ' + organizerData[0].title,
-            text: `Hello, user ${participationData.name} just voted`,
-        
-          }
-          // Send email
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error occurred:', error.message);
-            }
-            console.log('Email sent successfully!', info.response);
-          })
-
+          await sendEmail(organizerData[0].userEmail, 'Notification of voting in your meeting ' + organizerData[0].title, `Hello, user ${participationData.name} just voted`)
           return newParticipation
         }else{
           throw new Error('Failed to post participation.');
