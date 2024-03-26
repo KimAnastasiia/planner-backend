@@ -137,7 +137,7 @@ export class MeetingsController {
     meetingData.userEmail = request["userEmail"];
     meetingData.invited = getUniqueObjects(meetingData.invited)
     meetingData.invited= meetingData.invited.filter((i)=>i.email!=meetingData.userEmail)
-    
+    if(!meetingData.limitedSelection) meetingData.amountOfLimitedSelection=0
     try {
       const meeting = await this.meetingsService.postMeeting(meetingData);
       const meetingId: bigint = meeting.id

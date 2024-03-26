@@ -39,7 +39,10 @@ export class meetings {
   private:boolean;
 
   @Column()
-  oneToOne:boolean;
+  limitedSelection:boolean;
+
+  @Column()
+  amountOfLimitedSelection:number;
 }
 
 

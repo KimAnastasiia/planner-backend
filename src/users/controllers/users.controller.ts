@@ -128,8 +128,7 @@ export class UsersController {
   }
   @Put()
   async editUser(@Body() userNewData: VerificateUserDto, @Req() request: Request) {
-    const cipher = crypto.createCipher(algorithm, keyEncrypt);
-    userNewData.password = cipher.update(userNewData.password, 'utf8', 'hex') + cipher.final('hex');
+    
     try {
       const email = request["userEmail"]
       return this.usersService.editUser(userNewData, email)

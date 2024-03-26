@@ -78,7 +78,7 @@ export class ParticipationController {
 
         const organizerData = await this.meetingsService.getMeeting(participationData.meetingId, participationData.meetingToken);
         const invited= organizerData[0].invited.find((i)=>i.email==userEmail)
-        if(invited){
+        if(invited || organizerData[0].userEmail==userEmail){
           const newParticipation = await this.participationService.postParticipation(participationData);
           await sendEmail(organizerData[0].userEmail, 'Notification of voting in your meeting ' + organizerData[0].title, `Hello, user ${participationData.name} just voted`)
           return newParticipation

@@ -28,6 +28,8 @@ export class createMeetingDto{
 
     invited: invited[];
 
-    oneToOne:boolean;
+    limitedSelection:boolean;
+
+    amountOfLimitedSelection:number
 }
 

@@ -56,7 +56,6 @@ export class UsersService {
       if(!userPrevData){
         throw new Error('User not found');
       }
-      userPrevData[0].password=userNewData.password
       userPrevData[0].name=userNewData.name
       return await this.userRepository.save(userPrevData);
     }catch(err){
